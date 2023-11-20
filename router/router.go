@@ -10,6 +10,6 @@ import (
 func UserRoutes(r *gin.RouterGroup, db *gorm.DB) {
 
 	r.POST("/signup", handlers.Signup)
-	// r.POST("/login",handlers.LoginWithPassword)
+	r.POST("/login",handlers.UserLoginWithPassword)
 
 }

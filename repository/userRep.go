@@ -5,7 +5,6 @@ import (
 	"ak/domain"
 	"ak/models"
 	"errors"
-	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -51,8 +50,23 @@ func SignupInsert(user models.SignupDetail) (models.SignupDetailResponse, error)
 	err := database.DB.Raw("INSERT INTO users(firstname, lastname, email, phone, password) VALUES (?,?,?,?,?) RETURNING firstname, lastname, email, phone", user.FirstName, user.LastName, user.Email, user.Phone, user.Password).Scan(&signupRes).Error
 
 	if err != nil {
-		fmt.Println(err, "asd")
+		// fmt.Println(err, "asd")
 		return models.SignupDetailResponse{}, err
 	}
 	return signupRes, nil
+}
+
+func FindUserDetailByEmail(user models.UserLogin) (models.UserLoginResponse, error) {
+
+	var UserDetails models.UserLoginResponse
+
+	err := database.DB.Raw(
+		`select * from users where email = ? and blocked = false`, user.Email).Scan(&UserDetails).Error
+
+	if err != nil {
+		return models.UserLoginResponse{}, errors.New("got an error fron ! searching users by email")
+
+	}
+
+	return UserDetails, nil
 }

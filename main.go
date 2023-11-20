@@ -13,7 +13,7 @@ func main() {
 
 	cfg, err := config.LoadConfig()
 	if err != nil {
-		log.Fatalf("error loading the config file")
+		log.Fatalf("error loading the config file")  
 	}
 	db, err := database.ConnectDatabase(cfg)
 	if err != nil {
