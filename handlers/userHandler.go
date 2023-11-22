@@ -4,7 +4,6 @@ import (
 	"ak/models"
 	"ak/response"
 	"ak/usecase"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -66,7 +65,7 @@ func UserLoginWithPassword(c *gin.Context) {
 	LogedUser, err := usecase.UserLogged(LoginUser)
 
 	if err != nil {
-		
+
 		erres := response.ClientResponse(http.StatusBadGateway, "server error from usecase", nil, err.Error())
 		c.JSON(http.StatusBadGateway, erres)
 		return

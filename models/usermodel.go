@@ -13,7 +13,7 @@ type SignupDetailResponse struct {
 	FirstName string `json:"firstname "`
 	LastName  string `json:"lastname"`
 	Email     string `json:"email"`
-	Phone     int    `json:"phone"`
+	Phone     string `json:"phone"`
 }
 
 type TokenUser struct {
@@ -23,9 +23,8 @@ type TokenUser struct {
 }
 
 type UserLogin struct {
-	Email string `json:"email" validate:"email"`
+	Email     string `json:"email" validate:"email"`
 	Passoword string `json:"password" validate:"min=8,max=20"`
-
 }
 
 type UserLoginResponse struct {
@@ -37,4 +36,3 @@ type UserLoginResponse struct {
 	Phone     string `json:"phone"`
 	Password  string `json:"password"`
 }
-

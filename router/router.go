@@ -11,5 +11,8 @@ func UserRoutes(r *gin.RouterGroup, db *gorm.DB) {
 
 	r.POST("/signup", handlers.Signup)
 	r.POST("/login",handlers.UserLoginWithPassword)
+	r.POST("/send-otp",handlers.SendOTP)
+	r.POST("/verify-otp",handlers.VerifyOTP)
+	
 
 }

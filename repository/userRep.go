@@ -5,6 +5,7 @@ import (
 	"ak/domain"
 	"ak/models"
 	"errors"
+	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -50,7 +51,7 @@ func SignupInsert(user models.SignupDetail) (models.SignupDetailResponse, error)
 	err := database.DB.Raw("INSERT INTO users(firstname, lastname, email, phone, password) VALUES (?,?,?,?,?) RETURNING firstname, lastname, email, phone", user.FirstName, user.LastName, user.Email, user.Phone, user.Password).Scan(&signupRes).Error
 
 	if err != nil {
-		// fmt.Println(err, "asd")
+		fmt.Println(err, "asd")
 		return models.SignupDetailResponse{}, err
 	}
 	return signupRes, nil
@@ -69,4 +70,17 @@ func FindUserDetailByEmail(user models.UserLogin) (models.UserLoginResponse, err
 	}
 
 	return UserDetails, nil
+}
+func FindUserByMobileNumber(phone string) (*domain.User, error) {
+	var User domain.User
+
+	result := database.DB.Where(&domain.User{Phone: phone}).First(&User)
+
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, result.Error
+	}
+	return &User, nil
 }
