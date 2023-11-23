@@ -13,7 +13,7 @@ func main() {
 
 	cfg, err := config.LoadConfig()
 	if err != nil {
-		log.Fatalf("error loading the config file")  
+		log.Fatalf("error loading the config file")
 	}
 	db, err := database.ConnectDatabase(cfg)
 	if err != nil {
@@ -23,6 +23,7 @@ func main() {
 	router := gin.Default()
 	// router.LoadHTMLGlob("templates/*")
 	routes.UserRoutes(router.Group("/"), db)
+	routes.AdminRoutes(router.Group("/admin"),db)
 
 	err = router.Run("localhost:8080")
 	if err != nil {

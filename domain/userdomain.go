@@ -12,5 +12,4 @@ type User struct {
 	Phone                 string`json:"phone"`
 	Blocked               bool   `json:"blocked" gorm:"default:false"`
 	Isadmin               bool   `json:"is_admin" gorm:"default:false"`
-	IsShippingCoordinator bool   `json:"is_shipping_coordinator" gorm:"default:false"`
 }

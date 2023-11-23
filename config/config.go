@@ -14,10 +14,13 @@ type Config struct {
 	DBPassword string `mapstructure:"DB_PASSWORD"`
 
 	KEY string `mapstructure:"KEY"`
+	KEY_FOR_ADMIN  string `mapstructure:"KEY_FOR_ADMIN"`
 
 	AUTHTOKEN   string `mapstructure:"TWILIO_AUTHTOKEN"`
 	ACCOUNTSID  string `mapstructure:"TWILIO_ACCOUNTSID"`
 	SERVICESSID string `mapstructure:"TWILIO_SERVICESID"`
+
+
 }
 
 var envs = []string{

@@ -7,12 +7,13 @@ import (
 	"gorm.io/gorm"
 )
 
-func UserRoutes(r *gin.RouterGroup, db *gorm.DB) {
+func 	UserRoutes(r *gin.RouterGroup, db *gorm.DB) *gin.RouterGroup {
 
 	r.POST("/signup", handlers.Signup)
-	r.POST("/login",handlers.UserLoginWithPassword)
-	r.POST("/send-otp",handlers.SendOTP)
-	r.POST("/verify-otp",handlers.VerifyOTP)
-	
+	r.POST("/login", handlers.UserLoginWithPassword)
+	r.POST("/send-otp", handlers.SendOTP)
+	r.POST("/verify-otp", handlers.VerifyOTP)
+
+	return r
 
 }
