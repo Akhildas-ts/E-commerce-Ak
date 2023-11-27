@@ -42,6 +42,21 @@ func AddCategory(c *gin.Context) {
 
 	succRes := response.ClientResponse(http.StatusOK, "Category was added succesfully", addcategory, nil)
 	c.JSON(http.StatusOK, succRes)
-	
 
 }
+
+//UPDATE CATEGORY ..
+
+// func UpdateCategory(c *gin.Context){
+
+// 	var uc models.Category
+
+// 	if err := c.ShouldBindJSON(&uc);err != nil {
+// 		errRes:= response.ClientResponse(http.StatusBadGateway,"field formate was not correct",nil,err)
+// 		c.JSON(http.StatusBadGateway,errRes)
+// 		return
+// 	}
+
+// 	 update,err := usecase.UpdateCategory(uc.ID,uc.Category)
+
+// }

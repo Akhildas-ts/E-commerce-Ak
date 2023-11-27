@@ -22,3 +22,8 @@ type Category struct {
 	ID           uint   `json:"id" gorm:"unique; not null"`
 	CategoryName string `json:"category_name"  gorm:"unique; not null"`
 }
+
+// type UpdateCategory struct {
+// 	ID           uint   `json:"id" gorm:"unique; not null"`
+// 	CategoryName string `json:"category_name"  gorm:"unique; not null"  validate:"required"`
+// }

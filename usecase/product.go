@@ -51,6 +51,11 @@ func AddCategory(category domain.Category) (domain.Category, error) {
 	return ProductResponse, nil
 }
 
+// func UpdateCategory(current int ,new int)(domain.UpdateCategory,error){
+// 	result,err := repository.CheckCategory()
+
+// }
+
 func DeleteProduct(productId string) error {
 	err := repository.DeleteProduct(productId)
 	if err != nil {

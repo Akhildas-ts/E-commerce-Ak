@@ -9,8 +9,7 @@ import (
 	"strconv"
 )
 
-// ADD PRODUCT .. 
-
+// ADD PRODUCT ..
 
 func AddProduct(product domain.Products) (domain.Products, error) {
 
@@ -36,8 +35,7 @@ func AddProduct(product domain.Products) (domain.Products, error) {
 	return ProductResponse, nil
 }
 
-
-// ADD CATEGORY FROM PRODUCTS.. 
+// ADD CATEGORY FROM PRODUCTS..
 
 func AddCategory(category domain.Category) (domain.Category, error) {
 	var b string
@@ -54,6 +52,7 @@ func AddCategory(category domain.Category) (domain.Category, error) {
 
 	return categoryResponse, nil
 }
+
 // CHECKING  THERE IS A PRODUCT ID FOR UPDATING
 
 func CheckProductExist(pid int) (bool, error) {
@@ -71,6 +70,8 @@ func CheckProductExist(pid int) (bool, error) {
 	}
 	return true, err
 }
+
+// func UpdateCategory(cu)
 
 // UPDATE PRODUCT ...
 
@@ -111,7 +112,6 @@ func UpdateProduct(pid int, quantity int) (models.ProductUpdateReciever, error) 
 	return newdetails, nil
 
 }
-
 
 // DELETE PRODUCT..
 
