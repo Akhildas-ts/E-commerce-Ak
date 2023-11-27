@@ -35,7 +35,7 @@ func DashBoardUserDetails() (models.DashBoardUser, error) {
 	if err != nil {
 		return models.DashBoardUser{}, nil
 	}
-	fmt.Println("hi")
+	fmt.Println("hiiii")
 
 	return userDetails, nil
 }
