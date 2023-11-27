@@ -5,6 +5,7 @@ import (
 	"ak/domain"
 	"ak/models"
 	"errors"
+	"fmt"
 )
 
 func AdminLogin(admin models.AdminLogin) (domain.Admin, error) {
@@ -13,6 +14,7 @@ func AdminLogin(admin models.AdminLogin) (domain.Admin, error) {
 	if err := database.DB.Raw("select * from users where email= ? and isadmin= true ", admin.Email).Scan(&admindomain).Error; err != nil {
 		return domain.Admin{}, errors.New("admin email is not available on database")
 	}
+	fmt.Println(admindomain.Password)
 
 	return admindomain, nil
 }
@@ -21,7 +23,7 @@ func DashBoardUserDetails() (models.DashBoardUser, error) {
 
 	var userDetails models.DashBoardUser
 
-	err := database.DB.Raw("select count (*) from user").Scan(&userDetails.TotalUsers).Error
+	err := database.DB.Raw("select count (*) from users").Scan(&userDetails.TotalUsers).Error
 
 	if err != nil {
 

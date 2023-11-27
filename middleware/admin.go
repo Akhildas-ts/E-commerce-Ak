@@ -13,7 +13,7 @@ import (
 func AuthorizationMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
-		tokenheader := c.GetHeader("Authorization")
+		tokenheader := c.GetHeader("Auth")
 		fmt.Println(tokenheader, "this the token")
 		if tokenheader == "" {
 			response := response.ClientResponse(http.StatusUnauthorized, "no auth header provieded", nil, nil)
@@ -36,7 +36,7 @@ func AuthorizationMiddleware() gin.HandlerFunc {
 		}
 
 		tokenpart := splitted[1]
-		tokenClaims, err := helper.ValidateToken(tokenpart)
+		_, err := helper.ValidateToken(tokenpart)
 		if err != nil {
 			response := response.ClientResponse(http.StatusUnauthorized, "Invalid token", nil, err.Error())
 			c.JSON(http.StatusUnauthorized, response)
@@ -44,7 +44,8 @@ func AuthorizationMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		c.Set("tokenClaims", tokenClaims)
+		// c.Set("claims", tokenClaims)
+
 		c.Next()
 
 	}

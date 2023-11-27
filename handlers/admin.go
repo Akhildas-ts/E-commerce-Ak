@@ -19,21 +19,19 @@ func AdminLogin(c *gin.Context) {
 
 	}
 
-	admin,err := usecase.AdminLogin(adminmodel)
+	admin, err := usecase.AdminLogin(adminmodel)
 
 	if err != nil {
 
-		erres:= response.ClientResponse(http.StatusBadGateway,"server error from admin use case",nil,err)
-		c.JSON(http.StatusBadGateway,erres)
+		erres := response.ClientResponse(http.StatusBadGateway, "server error from admin use case", nil, err)
+		c.JSON(http.StatusBadGateway, erres)
 		return
 	}
 
-	succesRes := response.ClientResponse(http.StatusOK,"admin login succes ",admin,nil)
-	c.JSON(http.StatusOK,succesRes)
+	succesRes := response.ClientResponse(http.StatusOK, "admin login succes ", admin, nil)
+	c.JSON(http.StatusOK, succesRes)
 
-
-} 
-
+}
 
 func DashBord(c *gin.Context) {
 
