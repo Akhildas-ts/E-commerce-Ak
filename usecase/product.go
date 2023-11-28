@@ -4,6 +4,7 @@ import (
 	"ak/domain"
 	"ak/models"
 	"ak/repository"
+	"errors"
 	"fmt"
 )
 
@@ -51,10 +52,40 @@ func AddCategory(category domain.Category) (domain.Category, error) {
 	return ProductResponse, nil
 }
 
-// func UpdateCategory(current int ,new int)(domain.UpdateCategory,error){
-// 	result,err := repository.CheckCategory()
+//UPDATE CATEGOREY ....
 
-// }
+func UpdateCategory(current string, new string) (domain.Category, error) {
+
+	result, err := repository.CheckCategoryExist(current)
+	if err != nil {
+		fmt.Println("from name ")
+		return domain.Category{}, err
+	}
+
+	if !result {
+		return domain.Category{}, errors.New("error from checkCategory exist ")
+
+	}
+
+	newupdate, err := repository.UpdateCategory(current, new)
+
+	if err != nil {
+		return domain.Category{}, errors.New("errors from update category ")
+
+	}
+
+	return newupdate, nil
+
+}
+
+func DeleteCategory(categoryId string)error{
+	err := repository.DeleteCategory(categoryId)
+	if err != nil{
+		return err
+	}
+	return nil
+
+}
 
 func DeleteProduct(productId string) error {
 	err := repository.DeleteProduct(productId)

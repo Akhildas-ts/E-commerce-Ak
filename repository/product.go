@@ -53,6 +53,65 @@ func AddCategory(category domain.Category) (domain.Category, error) {
 	return categoryResponse, nil
 }
 
+// CHECKING THE CATEGORY FROM REPO
+
+func CheckCategoryExist(current string) (bool, error) {
+
+	var i int
+
+	if err := database.DB.Raw("select count(*) from categories where category_name =? ", current).Scan(&i).Error; err != nil {
+		return false, errors.New("category name  is inavlid ")
+
+	}
+
+	if i < 1 {
+		return false, errors.New("category name is not exist on database ")
+
+	}
+	return true, nil
+
+}
+
+//UPDATE CATEGORY FROM REPOSITORY
+
+func UpdateCategory(current string, new string) (domain.Category, error) {
+
+	if database.DB == nil {
+		return domain.Category{}, errors.New("database connection is nil")
+
+	}
+
+	if err := database.DB.Exec("update categories set category_name =$1 where category_name=$2", new, current).Error; err != nil {
+		return domain.Category{}, err
+	}
+
+	var newupdate domain.Category
+
+	if err := database.DB.First(&newupdate, "category_name=?", new).Error; err != nil {
+		return domain.Category{}, err
+	}
+
+	return newupdate, nil
+
+}
+
+func DeleteCategory(categoryId string) error {
+
+	id, err := strconv.Atoi(categoryId)
+	fmt.Println("category id :", categoryId)
+
+	if err != nil {
+		return errors.New("couldn't convert")
+
+	}
+
+	result := database.DB.Exec("DELETE FROM categories where id =?", id)
+	if result.RowsAffected < 1 {
+		return errors.New("no records are there")
+	}
+	return nil
+}
+
 // CHECKING  THERE IS A PRODUCT ID FOR UPDATING
 
 func CheckProductExist(pid int) (bool, error) {
@@ -70,8 +129,6 @@ func CheckProductExist(pid int) (bool, error) {
 	}
 	return true, err
 }
-
-// func UpdateCategory(cu)
 
 // UPDATE PRODUCT ...
 
