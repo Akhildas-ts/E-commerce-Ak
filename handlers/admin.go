@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 )
 
 func AdminLogin(c *gin.Context) {
@@ -15,6 +16,13 @@ func AdminLogin(c *gin.Context) {
 	if err := c.ShouldBindJSON(&adminmodel); err != nil {
 		erres := response.ClientResponse(http.StatusBadGateway, "formate is not correct (admin)", nil, err)
 		c.JSON(http.StatusBadGateway, erres)
+		return
+
+	}
+
+	if err := validator.New().Struct(adminmodel); err != nil {
+		errRes := response.ClientResponse(http.StatusBadGateway, "constrian are not satisfied ", nil, err.Error())
+		c.JSON(http.StatusBadGateway, errRes)
 		return
 
 	}

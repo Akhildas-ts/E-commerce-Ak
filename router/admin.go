@@ -12,30 +12,29 @@ func AdminRoutes(r *gin.RouterGroup, db *gorm.DB) *gin.RouterGroup {
 
 	r.POST("/admin", handlers.AdminLogin)
 
-	//MIDDLE WARE 
+	//MIDDLE WARE
 
 	r.Use(middleware.AuthorizationMiddleware())
 	{
 		r.GET("/dashboard", handlers.DashBord)
 	}
 
-	//PRODUCT 
+	//PRODUCT
 	product := r.Group("/products")
 	{
 		product.POST("", handlers.AddProduct)
-		product.PUT("",handlers.UpdateProduct)
-		product.DELETE("",handlers.DeleteProduct)
+		product.PUT("", handlers.UpdateProduct)
+		product.DELETE("", handlers.DeleteProduct)
 	}
 
 	// Categorry
 
-	category := r.Group("/category") 
+	category := r.Group("/category")
 	{
-		category.POST("",handlers.AddCategory)
+		category.POST("", handlers.AddCategory)
+		category.PUT("", handlers.UpdateCategory)
+		category.DELETE("", handlers.DeleteCategory)
 	}
-
-	
-
 
 	return r
 

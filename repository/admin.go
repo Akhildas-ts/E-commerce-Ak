@@ -16,6 +16,7 @@ func AdminLogin(admin models.AdminLogin) (domain.Admin, error) {
 	}
 	fmt.Println(admindomain.Password)
 
+	fmt.Println("admin domain is ", admindomain)
 	return admindomain, nil
 }
 
