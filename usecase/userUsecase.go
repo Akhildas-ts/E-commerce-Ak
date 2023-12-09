@@ -52,6 +52,8 @@ func UsersingUp(user models.SignupDetail) (*models.TokenUser, error) {
 		return &models.TokenUser{}, errors.New("could not add User ")
 	}
 
+	fmt.Println("data inserted in signup :", dataInsert)
+
 	// CREATING A JWT TOKEN FOR THE NEW USER\\
 
 	accessToken, err := helper.GenerateAccessToken(dataInsert)
@@ -133,4 +135,93 @@ func UserLogged(user models.UserLogin) (*models.TokenUser, error) {
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
 	}, nil
+}
+
+func GetAllAddress(userId int) (models.AddressInfoResponse, error) {
+
+	addressInfo, err := repository.GetAllAddress(userId)
+
+	if err != nil {
+		return models.AddressInfoResponse{}, err
+	}
+
+	// if (models.AddressInfoResponse{}) != addressInfo{
+	// 	return models.AddressInfoResponse{},errors.New("there is no record is avalable on database")
+
+	// }
+
+	return addressInfo, nil
+}
+
+func Addaddress(UserId int, address models.AddressInfo) error {
+
+	if err := repository.AddAddress(UserId, address); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func UserDetails(userid int) (models.UsersProfileDetails, error) {
+
+	//  return repository.UserDetails(userid)
+
+	// func UserDetails(userID int) (models.UsersProfileDetails, error) {
+	models, error := repository.UserDetails(userid)
+
+	fmt.Println("user details form repo :", models)
+	return models, error
+
+}
+
+func CheckOut(userid int) (models.CheckoutDetails, error) {
+
+	//LIST ALL ADDRESS  ADDED BY THE USER...
+
+	allUserAddress, err := repository.GetAllAddresses(userid)
+
+	fmt.Println("alluserAddres : from usecase:", allUserAddress)
+
+	if err != nil {
+		return models.CheckoutDetails{}, err
+
+	}
+
+	//GET ALL ITEMS FROM USER CARTS
+
+	cartitems, err := repository.GetAllItemsFromCart(userid)
+
+	fmt.Println("cartitems from repo:", cartitems)
+
+	if err != nil {
+		return models.CheckoutDetails{}, err
+	}
+
+	grandTotal, err := repository.GetTotalPrice(userid)
+
+	if err != nil {
+
+		return models.CheckoutDetails{}, err
+	}
+
+	//GET AVAILABLE THE PAYMENT OPTION <<<<
+
+	// paymentDetails,err := repository.GetAllPaymentOption()
+
+	// if err != nil {
+	// 	return models.CheckoutDetails{},err
+	// }
+
+	fmt.Println("modoels.checkoutdetails struct is :", models.CheckoutDetails{})
+
+	fmt.Println("final price :", grandTotal.FinalPrice)
+	return models.CheckoutDetails{
+		AddressInfoResponse: allUserAddress,
+		// Payment_Method: paymentDetails,
+		Grand_Total: grandTotal.TotalPrice,
+		Total_Price: grandTotal.FinalPrice,
+		Cart:        cartitems,
+		// Payment_Method: paymentDetails,
+	}, nil
+
 }
