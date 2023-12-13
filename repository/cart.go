@@ -132,27 +132,6 @@ func GetTotalPrice(userID int) (models.CartTotal, error) {
 
 }
 
-func DisplayCart(userid int) ([]models.Cart, error) {
-
-	var count int
-
-	if err := database.DB.Raw("select count(*) from  carts where user_id =?", userid).First(&count).Error; err != nil {
-		return []models.Cart{}, err
-	}
-
-	if count == 0 {
-		return []models.Cart{}, nil
-	}
-
-	var cartResponse []models.Cart
-
-	if err := database.DB.Raw("select carts.user_id,users.firstname as user_name,carts.product_id,products.name as product_name,carts.quantity,carts.total_price from carts inner join users on carts.user_id =users.id inner join products on carts.product_id =products.id where user_id =? ", userid).First(&cartResponse).Error; err != nil {
-
-		return []models.Cart{}, err
-	}
-
-	return cartResponse, nil
-}
 
 //GETTING ALL ITEMS FROM CARTS FOR THE CHECKOUT PAGE <<<<<<
 

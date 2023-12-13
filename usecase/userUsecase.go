@@ -204,13 +204,15 @@ func CheckOut(userid int) (models.CheckoutDetails, error) {
 		return models.CheckoutDetails{}, err
 	}
 
-	//GET AVAILABLE THE PAYMENT OPTION <<<<
+	// GET AVAILABLE THE PAYMENT OPTION <<<<
 
-	// paymentDetails,err := repository.GetAllPaymentOption()
+	// paymentDetails, err := repository.GetAllPaymentOption()
 
 	// if err != nil {
-	// 	return models.CheckoutDetails{},err
+	// 	return models.CheckoutDetails{}, err
 	// }
+
+	
 
 	fmt.Println("modoels.checkoutdetails struct is :", models.CheckoutDetails{})
 
@@ -218,9 +220,9 @@ func CheckOut(userid int) (models.CheckoutDetails, error) {
 	return models.CheckoutDetails{
 		AddressInfoResponse: allUserAddress,
 		// Payment_Method: paymentDetails,
-		Grand_Total: grandTotal.TotalPrice,
-		Total_Price: grandTotal.FinalPrice,
-		Cart:        cartitems,
+		Grand_Total:    grandTotal.TotalPrice,
+		Total_Price:    grandTotal.FinalPrice,
+		Cart:           cartitems,
 		// Payment_Method: paymentDetails,
 	}, nil
 
