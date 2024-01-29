@@ -7,6 +7,7 @@ import (
 	"ak/repository"
 	"errors"
 	"fmt"
+	"time"
 
 	"github.com/jinzhu/copier"
 )
@@ -29,7 +30,7 @@ func OrderItemsFromCart(oderfromcart models.OrderFromCart, userId int) (domain.O
 	}
 
 	if !cartExist {
-		return domain.OrderSuccessResponse{}, errors.New("cart empty can't order")
+		return domain.OrderSuccessResponse{}, models.CartEmpty
 	}
 
 	addressExist, err := repository.AddreesExist(orderbody)
@@ -39,7 +40,7 @@ func OrderItemsFromCart(oderfromcart models.OrderFromCart, userId int) (domain.O
 	}
 
 	if !addressExist {
-		return domain.OrderSuccessResponse{}, errors.New("addres does not exist")
+		return domain.OrderSuccessResponse{}, models.AddresNotFound
 	}
 
 	// GETTING ALL ITEMS FROM THE CART <<<<
@@ -62,6 +63,19 @@ func OrderItemsFromCart(oderfromcart models.OrderFromCart, userId int) (domain.O
 	for _, c := range cartitems {
 		orderDetail.GrandTotal += c.TotalPrice
 	}
+	discount_price, err := repository.GetCouponDiscountPrice(int(orderbody.UserID), orderDetail.GrandTotal)
+
+	if err != nil {
+		return domain.OrderSuccessResponse{}, err
+	}
+
+	err = repository.UpdateCouponDetails(discount_price, orderDetail.UserID)
+
+	if err != nil {
+		return domain.OrderSuccessResponse{}, err
+	}
+
+	orderDetail.FinalPrice = orderDetail.GrandTotal - discount_price
 
 	// if orderbody.PaymentID == 2 {
 	// 	orderDetail.PaymentMethod ="not paid"
@@ -96,7 +110,6 @@ func OrderItemsFromCart(oderfromcart models.OrderFromCart, userId int) (domain.O
 
 }
 
-
 func GetOrderDetails(userId int, page int, count int) ([]models.FullOrderDetails, error) {
 
 	fullOrderDetails, err := repository.GetOrderDetails(userId, page, count)
@@ -106,7 +119,6 @@ func GetOrderDetails(userId int, page int, count int) ([]models.FullOrderDetails
 	return fullOrderDetails, nil
 
 }
-
 
 func CancelOrder(orderid string, userid int) error {
 
@@ -120,7 +132,7 @@ func CancelOrder(orderid string, userid int) error {
 	}
 
 	if userTest != userid {
-		return errors.New("the order is done by the user )")
+		return models.UserNotMatch
 	}
 
 	//>>GETTING PRODUCT ID FROM  ORDER'S<<<<<<
@@ -151,20 +163,18 @@ func CancelOrder(orderid string, userid int) error {
 	}
 
 	if shipmentStatus == "cancelled" {
-		fmt.Println("he")
 
 		return errors.New("the order is  already  cancelled ,so no point to cancelling ")
 	}
 
-	if shipmentStatus == "processing" {
+	// if shipmentStatus == "processing" {
 
-		return errors.New("the order is  already  cancelled ,so no point to cancelling ")
-	}
+	// 	return errors.New("the order is  already  cancelled ,so no point to cancelling ")
+	// }
 	err = repository.CancelOrders(orderid)
-	fmt.Println("eroor is ", err)
 
 	if err != nil {
-		fmt.Println("hey from cancel ordrs")
+
 		return err
 	}
 
@@ -182,7 +192,7 @@ func ExecutePurchaseCOD(userID int, addressID int) (models.Invoice, error) {
 		return models.Invoice{}, err
 	}
 	if !ok {
-		return models.Invoice{}, errors.New("cart doesnt exist")
+		return models.Invoice{},models.CartEmpty
 	}
 	cartDetails, err := repository.DisplayCart(userID)
 	if err != nil {
@@ -197,5 +207,83 @@ func ExecutePurchaseCOD(userID int, addressID int) (models.Invoice, error) {
 		AddressInfo: addresses,
 	}
 	return Invoice, nil
+
+}
+
+func OrderDelivered(orderID string) error {
+
+	shipmentStatus, err := repository.GetShipmentStatus(orderID)
+	if err != nil {
+		fmt.Println("repo orderdeliverd")
+	}
+
+	fmt.Println("shipement status ", shipmentStatus)
+
+	if shipmentStatus == "delivered" {
+
+		return models.AlreadyReturn
+	}
+
+	if shipmentStatus == "processing" {
+		shipmentStatus = "delivered"
+		return repository.UpdateShipmentStatus(shipmentStatus, orderID)
+	}
+
+	return errors.New("order not placed or order id does not exist")
+}
+
+func ReturnOrder(orderid string) error {
+
+	shipmentStatus, err := repository.GetShipmentStatus(orderid)
+
+	if err != nil {
+
+		return err
+	}
+
+	timeDelivered, err := repository.GetTimeDeliverdTime(orderid)
+
+	if err != nil {
+		fmt.Println("error 2")
+		return err
+	}
+
+	currentTime := time.Now()
+	returnPeriod := timeDelivered.Add(time.Hour * 24 * 7)
+
+	fmt.Println("currentTime_", currentTime)
+	fmt.Println("returnTime", returnPeriod)
+	if currentTime.After(returnPeriod) {
+
+		return models.CannotReturn
+
+	}
+
+	if shipmentStatus == "return" {
+
+		return models.AlreadyReturn
+	}
+
+	if shipmentStatus == "cancelled" {
+		return models.AlreadyCancelled
+	}
+
+	if shipmentStatus == "delivered" && currentTime.Before(returnPeriod) {
+
+		shipmentStatus = "return"
+
+		return repository.ReturnOrder(shipmentStatus, orderid)
+	}
+
+	return errors.New("can't return order ")
+}
+
+func GetOrderDetailsFromAdmin(page int, count int) ([]models.FullOrderDetails, error) {
+
+	fullOrderDetails, err := repository.GetOrderDetailsFromAdmin(page, count)
+	if err != nil {
+		return []models.FullOrderDetails{}, err
+	}
+	return fullOrderDetails, nil
 
 }

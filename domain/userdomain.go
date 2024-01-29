@@ -26,3 +26,20 @@ type Address struct {
 	State     string `json:"state" validate:"required"`
 	Pin       string `json:"pin" validate:"required"`
 }
+
+type Wallet struct {
+	ID           uint    `json:"id" gorm:"unique;not null"`
+	UserID       uint    `json:"user_id"`
+	Users        User  `json:"-" gorm:"foreignkey:UserID"`
+	WalletAmount float64 `json:"wallet_amount"`
+}
+
+type BillingAddress struct {
+	Name      string `json:"name" validate:"required"`
+	HouseName string `json:"house_name" validate:"required"`
+	State     string `json:"state" validate:"required"`
+	Pin       string `json:"pin" validate:"required"`
+	Street    string `json:"street"`
+	City      string `json:"city"`
+}
+

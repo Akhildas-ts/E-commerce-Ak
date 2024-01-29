@@ -108,6 +108,8 @@ func AddAddress(userId int, address models.AddressInfo) error {
 	return nil
 }
 
+
+
 func UserDetails(userid int) (models.UsersProfileDetails, error) {
 
 	var userdetails models.UsersProfileDetails
@@ -150,15 +152,65 @@ func GetAllAddresses(userid int) ([]models.AddressInfoResponse, error) {
 	return addressResponse, nil
 }
 
-// func GetAllPaymentOption() ([]models.PaymentDetails,error)  {
 
-// 	var paymentmethod []models.PaymentDetails
+func GetAllPaymentOption() ([]models.PaymentDetails,error)  {
 
-// 	err := database.DB.Raw("select * from  payment_method").Scan(&paymentmethod).Error
+	var paymentmethod []models.PaymentDetails
 
-// 	if err != nil {
-// 		return []models.PaymentDetails{},err
-// 	}
+	err := database.DB.Raw("select * from  payment_methods").Scan(&paymentmethod).Error
 
-// 	return paymentmethod,nil
-// }
+	if err != nil {
+		return []models.PaymentDetails{},err
+	}
+
+	return paymentmethod,nil
+}
+
+func GetReferralAndTotalAmount(userId int ) (float64,float64,error){
+
+	var cartDetails struct{
+
+		ReferralAmount float64
+		totalCartAmount float64
+	}
+
+
+	err := database.DB.Raw("SELECT (SELECT referral_amount from referrals where user_id = ?)AS referral_amount,COALESCE(SUM(total_price),0)AS total_cart_amount from carts WHERE user_id= ?",userId,userId).Scan(&cartDetails).Error
+
+	if err != nil{
+
+		return 0.0,0.0,err
+	}
+
+	return cartDetails.ReferralAmount,cartDetails.totalCartAmount,nil
+}
+
+func UpdateSomethingBasedOnUserID(tableName string, columnName string, updateValue float64, userID int) error {
+
+	err := database.DB.Exec("update "+tableName+" set "+columnName+" = ? where user_id = ?", updateValue, userID).Error
+	if err != nil {
+		database.DB.Rollback()
+		return err
+	}
+	return nil
+
+}
+
+func CheckAddress(userid int )error {
+
+
+	var addres models.AddressInfoResponse
+
+
+	err := database.DB.Raw("select * from addresses where user_id = ?",userid).Scan(&addres).Error
+
+	if err != nil {
+		return err
+	}
+
+	if (models.AddressInfoResponse{} != addres) {
+
+		return errors.New("address alredy exist")
+	}
+	return err
+}

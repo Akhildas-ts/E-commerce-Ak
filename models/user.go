@@ -76,4 +76,29 @@ type CheckoutDetails struct {
 	Cart                []Cart
 	Grand_Total         float64
 	Total_Price         float64
+	DiscountReason      []string
 }
+
+
+type ForgetPassword struct { 
+
+ReEnterPassword  string  `json:"re_password"`
+ConformPassword string   `json:"conform"`
+
+}
+
+
+type UpdatePassword struct {
+	OldPassword        string `json:"old_password" binding:"required"`
+	NewPassword        string `json:"new_password" binding:"required"`
+	ConfirmNewPassword string `json:"confirm_new_password" binding:"required"`
+}
+
+// type BillingAddresInfo struct {
+// 	Name      string `json:"name" validate:"required"`
+// 	HouseName string `json:"house_name" validate:"required"`
+// 	State     string `json:"state" validate:"required"`
+// 	Pin       string `json:"pin" validate:"required"`
+// 	Street    string `json:"street"`
+// 	City      string `json:"city"`
+// }

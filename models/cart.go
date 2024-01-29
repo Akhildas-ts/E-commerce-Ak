@@ -2,6 +2,7 @@ package models
 
 type CartResponse struct {
 	UserName   string
+	FinalPrice float64
 	TotalPrice float64
 	Cart       []Cart
 }

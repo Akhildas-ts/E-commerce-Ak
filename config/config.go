@@ -13,18 +13,23 @@ type Config struct {
 	DBPort     string `mapstructure:"DB_PORT"`
 	DBPassword string `mapstructure:"DB_PASSWORD"`
 
-	KEY string `mapstructure:"KEY"`
-	KEY_FOR_ADMIN  string `mapstructure:"KEY_FOR_ADMIN"`
+	KEY           string `mapstructure:"KEY"`
+	KEY_FOR_ADMIN string `mapstructure:"KEY_FOR_ADMIN"`
 
 	AUTHTOKEN   string `mapstructure:"TWILIO_AUTHTOKEN"`
 	ACCOUNTSID  string `mapstructure:"TWILIO_ACCOUNTSID"`
 	SERVICESSID string `mapstructure:"TWILIO_SERVICESID"`
 
+	KEY_ID_FOR_RAYZORPAY        string `mapstructure:"KEY_ID_FOR_RAYZORPAY"`
+	SECRET_KEY_ID_FOR_RAYZORPAY string `mapstructure:"SECRET_KEY_ID_FOR_RAYZORPAY"`
 
+	AWS_REGION            string `mapstructure:"AWS_REGION"`
+	AWS_ACCESS_KEY_ID     string `mapstructure:"AWS_ACCESS_KEY_ID"`
+	AWS_SECRET_ACCESS_KEY string `mapstructure:"AWS_SECRET_ACCESS_KEY"`
 }
 
 var envs = []string{
-	"BASE_URL", "DB_HOST", "DB_NAME", "DB_USER", "DB_PORT", "DB_PASSWORD"}
+	"BASE_URL", "DB_HOST", "DB_NAME", "DB_USER", "DB_PORT", "DB_PASSWORD", "AWS_REGION", "AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY"}
 
 func LoadConfig() (Config, error) {
 	var config Config

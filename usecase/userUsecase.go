@@ -94,7 +94,7 @@ func UserLogged(user models.UserLogin) (*models.TokenUser, error) {
 	}
 
 	if email == nil {
-		return &models.TokenUser{}, errors.New("EMAIL IS NOT AVAILABLE ")
+		return &models.TokenUser{}, models.ErrEmailNotFound
 
 	}
 
@@ -137,6 +137,19 @@ func UserLogged(user models.UserLogin) (*models.TokenUser, error) {
 	}, nil
 }
 
+func GetUserDataWithEmail(login models.UserLogin) (models.UserLoginResponse, error) {
+
+	UserDetials, err := repository.FindUserDetailByEmail(login)
+	if err != nil {
+		return models.UserLoginResponse{}, errors.New("email does not exist on database ")
+
+	}
+
+	return UserDetials, nil
+
+}
+
+
 func GetAllAddress(userId int) (models.AddressInfoResponse, error) {
 
 	addressInfo, err := repository.GetAllAddress(userId)
@@ -145,15 +158,18 @@ func GetAllAddress(userId int) (models.AddressInfoResponse, error) {
 		return models.AddressInfoResponse{}, err
 	}
 
-	// if (models.AddressInfoResponse{}) != addressInfo{
-	// 	return models.AddressInfoResponse{},errors.New("there is no record is avalable on database")
-
-	// }
+	
 
 	return addressInfo, nil
 }
 
 func Addaddress(UserId int, address models.AddressInfo) error {
+
+	err := repository.CheckAddress(UserId)
+
+	if err != nil {
+		return err
+	}
 
 	if err := repository.AddAddress(UserId, address); err != nil {
 		return err
@@ -161,6 +177,9 @@ func Addaddress(UserId int, address models.AddressInfo) error {
 
 	return nil
 }
+
+
+
 
 func UserDetails(userid int) (models.UsersProfileDetails, error) {
 
@@ -204,26 +223,83 @@ func CheckOut(userid int) (models.CheckoutDetails, error) {
 		return models.CheckoutDetails{}, err
 	}
 
+	var discountApplied []string
+
+	err = repository.DiscountReason(userid, "used_coupons", "COUPON APPLIED", &discountApplied)
+	if err != nil {
+		return models.CheckoutDetails{}, err
+	}
+	fmt.Println("Discount appiled", discountApplied)
+
 	// GET AVAILABLE THE PAYMENT OPTION <<<<
 
-	// paymentDetails, err := repository.GetAllPaymentOption()
+	paymentDetails, err := repository.GetAllPaymentOption()
 
-	// if err != nil {
-	// 	return models.CheckoutDetails{}, err
-	// }
+	if err != nil {
+		return models.CheckoutDetails{}, err
+	}
 
-	
-
-	fmt.Println("modoels.checkoutdetails struct is :", models.CheckoutDetails{})
-
-	fmt.Println("final price :", grandTotal.FinalPrice)
 	return models.CheckoutDetails{
 		AddressInfoResponse: allUserAddress,
-		// Payment_Method: paymentDetails,
-		Grand_Total:    grandTotal.TotalPrice,
-		Total_Price:    grandTotal.FinalPrice,
-		Cart:           cartitems,
-		// Payment_Method: paymentDetails,
+		Grand_Total:         grandTotal.TotalPrice,
+		Total_Price:         grandTotal.FinalPrice,
+		Cart:                cartitems,
+		Payment_Method:      paymentDetails,
+		DiscountReason:      discountApplied,
 	}, nil
+
+}
+
+func ApplyReferral(userid int) (string, error) {
+
+	exist, err := repository.CartExist(userid)
+
+	if err != nil {
+
+		return "", err
+
+	}
+
+	if !exist {
+
+		return "", models.CartEmpty
+	}
+
+	referralAmount, totalCartAmount, err := repository.GetReferralAndTotalAmount(userid)
+	fmt.Println("totatl cart amount ",totalCartAmount , "refferal amount",referralAmount)
+
+	if err != nil {
+
+		return "", err
+	}
+
+	if totalCartAmount > referralAmount {
+		totalCartAmount = totalCartAmount - referralAmount
+
+		referralAmount = 0
+
+	} else {
+
+		referralAmount = referralAmount - totalCartAmount
+
+		totalCartAmount = 0
+	}
+
+	err = repository.UpdateSomethingBasedOnUserID("referrals", "referral_amount", referralAmount, userid)
+
+	if err != nil {
+		return "", err
+	}
+
+	err = repository.UpdateSomethingBasedOnUserID("carts", "total_price", totalCartAmount, userid)
+
+	fmt.Println("totatl cart amount ",totalCartAmount , "refferal amount",referralAmount)
+
+	if err != nil {
+
+		return "", err
+	}
+
+	return "", nil
 
 }
