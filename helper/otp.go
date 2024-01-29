@@ -24,7 +24,12 @@ func TwilioSendOtp(phone string, serviceID string) (string, error) {
 	params.SetTo("+91" + phone)
 	params.SetChannel("sms")
 
+	
+	fmt.Println("service id : and params :=",serviceID,params)
+
 	resp, err := client.VerifyV2.CreateVerification(serviceID, params)
+
+
 
 	if err != nil {
 		fmt.Println("hey from send otp ", err)

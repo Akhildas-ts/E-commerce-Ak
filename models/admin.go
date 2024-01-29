@@ -16,6 +16,7 @@ type AdminDetailsResponse struct {
 type DashBoardUser struct{
 	TotalUsers int
     BlockedUser int
+	UnBlockedUser int
 }
 
 

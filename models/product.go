@@ -31,3 +31,15 @@ type SetNewName struct {
 	Current string `json:"current"`
 	New     string `json:"new"`
 }
+type ProductBrief struct {
+	ID       int     `json:"id"`
+	Name     string  `json:"name"`
+	SKU      string  `json:"sku"`
+	BrandID  uint    `json:"brand_id"`
+	CategoryName  string  `json:"category"`
+	Quantity int     `json:"quantity"`
+	Price    float64 `json:"price"`
+	ProductStatus string	`json:"product_status"`
+}
+
+

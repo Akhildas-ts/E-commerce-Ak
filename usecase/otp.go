@@ -7,9 +7,12 @@ import (
 	"ak/repository"
 	"errors"
 	"fmt"
+
+	"github.com/jinzhu/copier"
 )
 
 func SendOTP(phone string) error {
+
 	cfg, err := config.LoadConfig()
 	if err != nil {
 		fmt.Println("cfg config")
@@ -63,10 +66,10 @@ func VerifyOTP(code models.VerifyData) (models.TokenUser, error) {
 	}
 
 	var user models.SignupDetailResponse
-	// err = copier.Copy(&user, &UserDetails)
-	// if err != nil {
-	// 	return models.TokenUser{}, err
-	// }
+	err = copier.Copy(&user, &UserDetails)
+	if err != nil {
+		return models.TokenUser{}, err
+	}
 
 	return models.TokenUser{
 		Users:        user,

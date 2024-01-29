@@ -52,6 +52,8 @@ func UsersingUp(user models.SignupDetail) (*models.TokenUser, error) {
 		return &models.TokenUser{}, errors.New("could not add User ")
 	}
 
+	fmt.Println("data inserted in signup :", dataInsert)
+
 	// CREATING A JWT TOKEN FOR THE NEW USER\\
 
 	accessToken, err := helper.GenerateAccessToken(dataInsert)
@@ -92,7 +94,7 @@ func UserLogged(user models.UserLogin) (*models.TokenUser, error) {
 	}
 
 	if email == nil {
-		return &models.TokenUser{}, errors.New("EMAIL IS NOT AVAILABLE ")
+		return &models.TokenUser{}, models.ErrEmailNotFound
 
 	}
 
@@ -133,4 +135,171 @@ func UserLogged(user models.UserLogin) (*models.TokenUser, error) {
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
 	}, nil
+}
+
+func GetUserDataWithEmail(login models.UserLogin) (models.UserLoginResponse, error) {
+
+	UserDetials, err := repository.FindUserDetailByEmail(login)
+	if err != nil {
+		return models.UserLoginResponse{}, errors.New("email does not exist on database ")
+
+	}
+
+	return UserDetials, nil
+
+}
+
+
+func GetAllAddress(userId int) (models.AddressInfoResponse, error) {
+
+	addressInfo, err := repository.GetAllAddress(userId)
+
+	if err != nil {
+		return models.AddressInfoResponse{}, err
+	}
+
+	
+
+	return addressInfo, nil
+}
+
+func Addaddress(UserId int, address models.AddressInfo) error {
+
+	err := repository.CheckAddress(UserId)
+
+	if err != nil {
+		return err
+	}
+
+	if err := repository.AddAddress(UserId, address); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+
+
+
+func UserDetails(userid int) (models.UsersProfileDetails, error) {
+
+	//  return repository.UserDetails(userid)
+
+	// func UserDetails(userID int) (models.UsersProfileDetails, error) {
+	models, error := repository.UserDetails(userid)
+
+	fmt.Println("user details form repo :", models)
+	return models, error
+
+}
+
+func CheckOut(userid int) (models.CheckoutDetails, error) {
+
+	//LIST ALL ADDRESS  ADDED BY THE USER...
+
+	allUserAddress, err := repository.GetAllAddresses(userid)
+
+	fmt.Println("alluserAddres : from usecase:", allUserAddress)
+
+	if err != nil {
+		return models.CheckoutDetails{}, err
+
+	}
+
+	//GET ALL ITEMS FROM USER CARTS
+
+	cartitems, err := repository.GetAllItemsFromCart(userid)
+
+	fmt.Println("cartitems from repo:", cartitems)
+
+	if err != nil {
+		return models.CheckoutDetails{}, err
+	}
+
+	grandTotal, err := repository.GetTotalPrice(userid)
+
+	if err != nil {
+
+		return models.CheckoutDetails{}, err
+	}
+
+	var discountApplied []string
+
+	err = repository.DiscountReason(userid, "used_coupons", "COUPON APPLIED", &discountApplied)
+	if err != nil {
+		return models.CheckoutDetails{}, err
+	}
+	fmt.Println("Discount appiled", discountApplied)
+
+	// GET AVAILABLE THE PAYMENT OPTION <<<<
+
+	paymentDetails, err := repository.GetAllPaymentOption()
+
+	if err != nil {
+		return models.CheckoutDetails{}, err
+	}
+
+	return models.CheckoutDetails{
+		AddressInfoResponse: allUserAddress,
+		Grand_Total:         grandTotal.TotalPrice,
+		Total_Price:         grandTotal.FinalPrice,
+		Cart:                cartitems,
+		Payment_Method:      paymentDetails,
+		DiscountReason:      discountApplied,
+	}, nil
+
+}
+
+func ApplyReferral(userid int) (string, error) {
+
+	exist, err := repository.CartExist(userid)
+
+	if err != nil {
+
+		return "", err
+
+	}
+
+	if !exist {
+
+		return "", models.CartEmpty
+	}
+
+	referralAmount, totalCartAmount, err := repository.GetReferralAndTotalAmount(userid)
+	fmt.Println("totatl cart amount ",totalCartAmount , "refferal amount",referralAmount)
+
+	if err != nil {
+
+		return "", err
+	}
+
+	if totalCartAmount > referralAmount {
+		totalCartAmount = totalCartAmount - referralAmount
+
+		referralAmount = 0
+
+	} else {
+
+		referralAmount = referralAmount - totalCartAmount
+
+		totalCartAmount = 0
+	}
+
+	err = repository.UpdateSomethingBasedOnUserID("referrals", "referral_amount", referralAmount, userid)
+
+	if err != nil {
+		return "", err
+	}
+
+	err = repository.UpdateSomethingBasedOnUserID("carts", "total_price", totalCartAmount, userid)
+
+	fmt.Println("totatl cart amount ",totalCartAmount , "refferal amount",referralAmount)
+
+	if err != nil {
+
+		return "", err
+	}
+
+	return "", nil
+
 }
