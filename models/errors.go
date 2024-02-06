@@ -16,6 +16,7 @@ var (
 	CannotReturn = errors.New("cannot return after 7 days")
 	AlreadyReturn = errors.New("already return")
 	AlreadyCancelled = errors.New("already canncelled")
+	AddresAlreadyExist = errors.New("addres is already exist")
 	
 
 )

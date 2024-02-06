@@ -60,7 +60,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/adminlogin": {
+        "/admin/admin": {
             "post": {
                 "description": "Login handler for admin",
                 "consumes": [
@@ -206,13 +206,11 @@ const docTemplate = `{
                 "summary": "DELETE CATEGORY",
                 "parameters": [
                     {
-                        "description": "Add new Category ",
+                        "type": "string",
+                        "description": "Category ID to be deleted",
                         "name": "id",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/domain.Category"
-                        }
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -231,7 +229,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/category/:page": {
+        "/admin/category/page": {
             "get": {
                 "security": [
                     {
@@ -251,11 +249,18 @@ const docTemplate = `{
                 "summary": "GET CATEGORY",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "page",
-                        "name": "id",
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Page count",
+                        "name": "count",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -518,6 +523,56 @@ const docTemplate = `{
                 }
             }
         },
+        "/admin/order/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Order details from admin side",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Order Management"
+                ],
+                "summary": "GET ORDER DETAILS FROM ADMIN",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "page number",
+                        "name": "page",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "page size",
+                        "name": "pagesize",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/orders/approve-order/{id}": {
             "get": {
                 "security": [
@@ -584,6 +639,51 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Order ID",
                         "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/products/page/{page}": {
+            "get": {
+                "description": "Retrieve all product Details with pagination to Admin",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Product"
+                ],
+                "summary": "Get Products Details to admin",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Page Count",
+                        "name": "count",
                         "in": "query",
                         "required": true
                     }
@@ -853,7 +953,7 @@ const docTemplate = `{
                         "Bearer": []
                     }
                 ],
-                "description": "Order details from admin side",
+                "description": "Order deliverd from user side",
                 "consumes": [
                     "application/json"
                 ],
@@ -861,23 +961,59 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin Order Management"
+                    "User Order Management"
                 ],
-                "summary": "GET ORDER DETAILS FROM ADMIN",
+                "summary": "ORDER DELIVERD",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "page number",
-                        "name": "page",
+                        "description": "Order ID",
+                        "name": "id",
                         "in": "path",
                         "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
                     },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/filter": {
+            "post": {
+                "description": "Show all the Products belonging to a specified category",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User Product"
+                ],
+                "summary": "Show Products of specified category",
+                "parameters": [
                     {
-                        "type": "string",
-                        "description": "page size",
-                        "name": "pagesize",
-                        "in": "query",
-                        "required": true
+                        "description": "Category IDs and quantities",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "integer"
+                            }
+                        }
                     }
                 ],
                 "responses": {
@@ -1079,6 +1215,51 @@ const docTemplate = `{
                 }
             }
         },
+        "/products/page/{page}": {
+            "get": {
+                "description": "Retrieve all product Details with pagination to users",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User Product"
+                ],
+                "summary": "Get Products Details to users",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Page Count",
+                        "name": "count",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/referral/apply": {
             "get": {
                 "security": [
@@ -1097,6 +1278,46 @@ const docTemplate = `{
                     "User Checkout"
                 ],
                 "summary": "Apply referrals",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/send-otp": {
+            "post": {
+                "description": "Send OTP to Authenticate user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User OTP Login"
+                ],
+                "summary": "OTP login",
+                "parameters": [
+                    {
+                        "description": "phone number details",
+                        "name": "phone",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.OTPData"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1205,6 +1426,46 @@ const docTemplate = `{
                     "User Profile"
                 ],
                 "summary": "User Details",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/verify-otp": {
+            "post": {
+                "description": "Verify OTP by passing the OTP in order to authenticate user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User OTP Login"
+                ],
+                "summary": "Verify OTP",
+                "parameters": [
+                    {
+                        "description": "Verify OTP Details",
+                        "name": "phone",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.VerifyData"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1337,6 +1598,17 @@ const docTemplate = `{
                 }
             }
         },
+        "models.OTPData": {
+            "type": "object",
+            "required": [
+                "phone"
+            ],
+            "properties": {
+                "phone": {
+                    "type": "string"
+                }
+            }
+        },
         "models.ProductOfferReceiver": {
             "type": "object",
             "required": [
@@ -1403,6 +1675,21 @@ const docTemplate = `{
                 }
             }
         },
+        "models.VerifyData": {
+            "type": "object",
+            "required": [
+                "code",
+                "user"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/models.OTPData"
+                }
+            }
+        },
         "response.Response": {
             "type": "object",
             "properties": {
@@ -1418,9 +1705,9 @@ const docTemplate = `{
         }
     },
     "securityDefinitions": {
-        "JWT": {
+        "Bearer": {
             "type": "apiKey",
-            "name": "token",
+            "name": "Auth",
             "in": "header"
         }
     }

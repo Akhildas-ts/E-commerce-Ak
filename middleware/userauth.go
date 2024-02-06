@@ -10,10 +10,12 @@ import (
 
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		fmt.Println("Request Headers:", c.Request.Header)
 
 		//retrive the jwt token from the header *****
 
 		authheader := c.GetHeader("Authorization")
+		fmt.Println("AUTHH", authheader)
 
 		tokenString := helper.GetTokenFromHeader(authheader)
 
@@ -23,6 +25,7 @@ func AuthMiddleware() gin.HandlerFunc {
 			var err error
 			tokenString, err = c.Cookie("Authorization")
 			if err != nil {
+				fmt.Println("erro is ", err)
 				fmt.Println("error from token string")
 
 				c.AbortWithStatus(http.StatusUnauthorized)
@@ -31,11 +34,11 @@ func AuthMiddleware() gin.HandlerFunc {
 		}
 
 		userId, userEmail, err := helper.ExtractUserIDFromToken(tokenString)
-		fmt.Println("userId",userId,"userEmail",userEmail)
+		fmt.Println("userId", userId, "userEmail", userEmail)
 
 		if err != nil {
 			fmt.Println("error from token ")
-			fmt.Println("error is ",err)
+			fmt.Println("error is ", err)
 
 			c.AbortWithStatus(http.StatusUnauthorized)
 			return
