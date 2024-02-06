@@ -77,6 +77,13 @@ definitions:
     required:
     - coupon_name
     type: object
+  models.OTPData:
+    properties:
+      phone:
+        type: string
+    required:
+    - phone
+    type: object
   models.ProductOfferReceiver:
     properties:
       discount_percentage:
@@ -121,6 +128,16 @@ definitions:
         minLength: 8
         type: string
     type: object
+  models.VerifyData:
+    properties:
+      code:
+        type: string
+      user:
+        $ref: '#/definitions/models.OTPData'
+    required:
+    - code
+    - user
+    type: object
   response.Response:
     properties:
       data: {}
@@ -164,7 +181,7 @@ paths:
       summary: AddAddress functionality for user
       tags:
       - User Profile
-  /admin/adminlogin:
+  /admin/admin:
     post:
       consumes:
       - application/json
@@ -196,12 +213,11 @@ paths:
       - application/json
       description: Add a new Category for products
       parameters:
-      - description: 'Add new Category '
-        in: body
+      - description: Category ID to be deleted
+        in: query
         name: id
         required: true
-        schema:
-          $ref: '#/definitions/domain.Category'
+        type: string
       produces:
       - application/json
       responses:
@@ -272,17 +288,22 @@ paths:
       summary: UPDATE CATEGORY
       tags:
       - Admin category
-  /admin/category/:page:
+  /admin/category/page:
     get:
       consumes:
       - application/json
       description: Get all category
       parameters:
-      - description: page
+      - description: Page number
         in: path
-        name: id
+        name: page
         required: true
-        type: string
+        type: integer
+      - default: 10
+        description: Page count
+        in: query
+        name: count
+        type: integer
       produces:
       - application/json
       responses:
@@ -453,6 +474,38 @@ paths:
       summary: Add  Product Offer
       tags:
       - Admin Offer Management
+  /admin/order/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Order details from admin side
+      parameters:
+      - description: page number
+        in: path
+        name: page
+        required: true
+        type: string
+      - description: page size
+        in: query
+        name: pagesize
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: GET ORDER DETAILS FROM ADMIN
+      tags:
+      - Admin Order Management
   /admin/orders/approve-order/{id}:
     get:
       consumes:
@@ -507,6 +560,36 @@ paths:
       summary: Cancel Order Admin
       tags:
       - Admin Order Management
+  /admin/products/page/{page}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all product Details with pagination to Admin
+      parameters:
+      - description: Page number
+        in: path
+        name: page
+        required: true
+        type: string
+      - description: Page Count
+        in: query
+        name: count
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get Products Details to admin
+      tags:
+      - Admin Product
   /cancel/{id}:
     get:
       consumes:
@@ -664,16 +747,11 @@ paths:
     get:
       consumes:
       - application/json
-      description: Order details from admin side
+      description: Order deliverd from user side
       parameters:
-      - description: page number
+      - description: Order ID
         in: path
-        name: page
-        required: true
-        type: string
-      - description: page size
-        in: query
-        name: pagesize
+        name: id
         required: true
         type: string
       produces:
@@ -689,9 +767,37 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - Bearer: []
-      summary: GET ORDER DETAILS FROM ADMIN
+      summary: ORDER DELIVERD
       tags:
-      - Admin Order Management
+      - User Order Management
+  /filter:
+    post:
+      consumes:
+      - application/json
+      description: Show all the Products belonging to a specified category
+      parameters:
+      - description: Category IDs and quantities
+        in: body
+        name: data
+        required: true
+        schema:
+          additionalProperties:
+            type: integer
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Show Products of specified category
+      tags:
+      - User Product
   /login:
     post:
       consumes:
@@ -809,6 +915,36 @@ paths:
       summary: Place Order
       tags:
       - User Order Management
+  /products/page/{page}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all product Details with pagination to users
+      parameters:
+      - description: Page number
+        in: path
+        name: page
+        required: true
+        type: string
+      - description: Page Count
+        in: query
+        name: count
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get Products Details to users
+      tags:
+      - User Product
   /referral/apply:
     get:
       consumes:
@@ -830,6 +966,32 @@ paths:
       summary: Apply referrals
       tags:
       - User Checkout
+  /send-otp:
+    post:
+      consumes:
+      - application/json
+      description: Send OTP to Authenticate user
+      parameters:
+      - description: phone number details
+        in: body
+        name: phone
+        required: true
+        schema:
+          $ref: '#/definitions/models.OTPData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: OTP login
+      tags:
+      - User OTP Login
   /showaddres:
     get:
       consumes:
@@ -898,9 +1060,35 @@ paths:
       summary: User Details
       tags:
       - User Profile
+  /verify-otp:
+    post:
+      consumes:
+      - application/json
+      description: Verify OTP by passing the OTP in order to authenticate user
+      parameters:
+      - description: Verify OTP Details
+        in: body
+        name: phone
+        required: true
+        schema:
+          $ref: '#/definitions/models.VerifyData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Verify OTP
+      tags:
+      - User OTP Login
 securityDefinitions:
-  JWT:
+  Bearer:
     in: header
-    name: token
+    name: Auth
     type: apiKey
 swagger: "2.0"

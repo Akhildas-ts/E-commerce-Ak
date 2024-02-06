@@ -5,6 +5,7 @@ import (
 	"ak/response"
 	"ak/usecase"
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -52,6 +53,7 @@ func Signup(c *gin.Context) {
 	c.JSON(http.StatusCreated, successRes)
 
 }
+
 // @Summary LogIn functionality for user
 // @Description LogIn functionality at the user side
 // @Tags User Authentication
@@ -60,7 +62,7 @@ func Signup(c *gin.Context) {
 // @Param user body models.UserLogin true "User Details Input"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /login [post]	
+// @Router /login [post]
 func UserLoginWithPassword(c *gin.Context) {
 
 	var LoginUser models.UserLogin
@@ -81,13 +83,12 @@ func UserLoginWithPassword(c *gin.Context) {
 	}
 
 	LogedUser, err := usecase.UserLogged(LoginUser)
-	if errors.Is(err, models.ErrEmailNotFound)  {
+	if errors.Is(err, models.ErrEmailNotFound) {
 
 		erres := response.ClientResponse(http.StatusBadRequest, "invalid email", nil, err.Error())
 		c.JSON(http.StatusBadGateway, erres)
 		return
 	}
-
 
 	if err != nil {
 
@@ -101,6 +102,7 @@ func UserLoginWithPassword(c *gin.Context) {
 	c.JSON(http.StatusOK, successres)
 
 }
+
 // @Summary Gett All Address
 // @Description From Gett all Address from User
 // @Tags User User Profile
@@ -138,6 +140,7 @@ func GetAllAddress(c *gin.Context) {
 // @Failure 500 {object} response.Response{}
 // @Router /addaddress [post]
 func AddAddress(c *gin.Context) {
+	fmt.Println("hey fom")
 	user_id, _ := c.Get(models.User_id)
 
 	var address models.AddressInfo
@@ -158,10 +161,11 @@ func AddAddress(c *gin.Context) {
 
 	if err := usecase.Addaddress(user_id.(int), address); err != nil {
 
-		errREs := response.ClientResponse(http.StatusBadGateway, "error from adding address", nil, err.Error())
+		errREs := response.ClientResponse(http.StatusBadRequest, "error from adding address", nil, err.Error())
 		c.JSON(http.StatusBadGateway, errREs)
 		return
 	}
+	
 
 	successRes := response.SuccessClientResponse(http.StatusOK, "added address sucessfully")
 	c.JSON(http.StatusOK, successRes)
@@ -193,6 +197,7 @@ func UserDetails(c *gin.Context) {
 	successRes := response.ClientResponse(http.StatusOK, "usre details", userdetails, nil)
 	c.JSON(http.StatusOK, successRes)
 }
+
 // @Summary CheckOut Page
 // @Description CheckOut page from user
 // @Tags User Checkout
@@ -218,6 +223,7 @@ func CheckOut(c *gin.Context) {
 	c.JSON(http.StatusOK, succesRes)
 
 }
+
 // @Summary Apply referrals
 // @Description Apply referrals amount to order
 // @Tags User Checkout
@@ -233,12 +239,12 @@ func ApplyReferral(c *gin.Context) {
 
 	message, err := usecase.ApplyReferral(userId.(int))
 
-	if errors.Is(err,models.CartEmpty){
+	if errors.Is(err, models.CartEmpty) {
 
 		errRes := response.ClientResponse(http.StatusNotFound, "record not found", nil, err.Error())
 		c.JSON(http.StatusInternalServerError, errRes)
 		return
-		
+
 	}
 
 	if err != nil {

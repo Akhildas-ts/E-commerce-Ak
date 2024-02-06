@@ -95,7 +95,7 @@ func UpdateCategory(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security Bearer
-// @Param id body domain.Category true "Add new Category "
+// @Param id query string true "Category ID to be deleted"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
 // @Router /admin/category [delete]
@@ -104,7 +104,7 @@ func DeleteCategory(c *gin.Context) {
 
 	err := usecase.DeleteCategory(categoryId)
 	if err != nil {
-		errRes := response.ClientResponse(http.StatusBadGateway, "field provide has wrong formate", nil, err)
+		errRes := response.ClientResponse(http.StatusBadRequest, "field provide has wrong formate", nil, err.Error())
 		c.JSON(http.StatusBadGateway, errRes)
 		return
 	}
@@ -112,17 +112,19 @@ func DeleteCategory(c *gin.Context) {
 	succRes := response.ClientResponse(http.StatusOK, "Delet record from categorie", nil, nil)
 	c.JSON(http.StatusOK, succRes)
 }
+
 // Get Category
 // @Summary GET CATEGORY
-// @Description Get all category 
+// @Description Get all category
 // @Tags Admin category
 // @Accept json
 // @Produce json
 // @Security Bearer
-// @Param id path string true "page"
+// @Param page path int true "Page number"
+// @Param count query int false "Page count" default(10)
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /admin/category/:page [get]
+// @Router /admin/category/page [get]
 func GetAllCategory(c *gin.Context) {
 
 	pageStr := c.Param(models.Page)

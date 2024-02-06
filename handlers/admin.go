@@ -18,7 +18,7 @@ import (
 // @Param  admin body models.AdminLogin true "Admin login details"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /admin/adminlogin [post]
+// @Router /admin/admin [post]
 func AdminLogin(c *gin.Context) {
 	var adminmodel models.AdminLogin
 

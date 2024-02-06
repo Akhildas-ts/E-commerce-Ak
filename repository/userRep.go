@@ -208,9 +208,9 @@ func CheckAddress(userid int )error {
 		return err
 	}
 
-	if (models.AddressInfoResponse{} != addres) {
+	// if (models.AddressInfoResponse{} != addres) {
 
-		return errors.New("address alredy exist")
-	}
+	// 	return  models.AddresAlreadyExist
+	// }
 	return err
 }
