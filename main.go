@@ -19,7 +19,7 @@ import (
 //	@description	API for ecommerce website
 //	@securityDefinitions.apiKey	Bearer
 //	@in							header
-//	@name						token
+//	@name						Authorization
 //	@license.name	Apache 2.0
 //	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
 //	@host			arundas.cloud
@@ -54,6 +54,7 @@ func main() {
 
 	err = router.Run("localhost:8080")
 	if err != nil {
+		fmt.Println("error from ")
 		fmt.Println("error from ")
 		log.Fatalf("Local host Error %v", err)
 
