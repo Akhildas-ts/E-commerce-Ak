@@ -1089,6 +1089,6 @@ paths:
 securityDefinitions:
   Bearer:
     in: header
-    name: Auth
+    name: token
     type: apiKey
 swagger: "2.0"

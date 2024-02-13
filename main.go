@@ -19,7 +19,7 @@ import (
 //	@description	API for ecommerce website
 //	@securityDefinitions.apiKey	Bearer
 //	@in							header
-//	@name						Auth
+//	@name						token
 //	@license.name	Apache 2.0
 //	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
 //	@host			arundas.cloud
