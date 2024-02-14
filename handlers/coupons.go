@@ -12,6 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
+
 // @Summary Add  a new coupon by Admin
 // @Description Add A new Coupon which can be used by the users from the checkout section
 // @Tags Admin Offer Management
@@ -58,6 +59,7 @@ func AddCoupon(c *gin.Context) {
 	c.JSON(http.StatusCreated, successRes)
 
 }
+
 // @Summary Get coupon details
 // @Description Get Available coupon details for admin side
 // @Tags Admin Offer Management
@@ -80,6 +82,7 @@ func GetCoupon(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 
 }
+
 // @Summary Expire Coupon
 // @Description Expire Coupon by admin which are already present by passing coupon id
 // @Tags Admin Offer Management
@@ -89,7 +92,7 @@ func GetCoupon(c *gin.Context) {
 // @Param id path string true "Coupon id"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /admin/offer/coupons/expire/{id} [patch]
+// @Router /admin/offer/coupons/expire/{id} [post]
 func ExpireCoupon(c *gin.Context) {
 
 	id := c.Param("id")
@@ -118,6 +121,7 @@ func ExpireCoupon(c *gin.Context) {
 	successRes := response.SuccessClientResponse(http.StatusOK, "Coupon expired successfully")
 	c.JSON(http.StatusOK, successRes)
 }
+
 // @Summary Add  Product Offer
 // @Description Add a new Offer for a product by specifying a limit
 // @Tags Admin Offer Management
@@ -127,7 +131,7 @@ func ExpireCoupon(c *gin.Context) {
 // @Param coupon body models.ProductOfferReceiver true "Add new Product Offer"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /admin/offer/product-offer [post]
+// @Router /admin/products/add-product-offer [post]
 func AddProductOffer(c *gin.Context) {
 
 	var productOffer models.ProductOfferReceiver
@@ -150,6 +154,7 @@ func AddProductOffer(c *gin.Context) {
 	successRes := response.SuccessClientResponse(http.StatusCreated, "Successfully added offer")
 	c.JSON(http.StatusCreated, successRes)
 }
+
 // @Summary Add  Category Offer
 // @Description Add a new Offer for a Category by specifying a limit
 // @Tags Admin Offer Management
@@ -159,7 +164,7 @@ func AddProductOffer(c *gin.Context) {
 // @Param coupon body models.CategoryOfferReceiver true "Add new Category Offer"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /admin/offer/category-offer [post]
+// @Router /admin/category/add-category-offer [post]
 func AddCategoryOffer(c *gin.Context) {
 
 	var categoryOffer models.CategoryOfferReceiver

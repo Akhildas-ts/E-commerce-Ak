@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
+
 // @Summary Admin Login
 // @Description Login handler for admin
 // @Tags Admin Authentication
@@ -49,6 +50,7 @@ func AdminLogin(c *gin.Context) {
 	c.JSON(http.StatusOK, succesRes)
 
 }
+
 // @Summary Admin Dashboard
 // @Description Get Amin Home Page with Complete Details
 // @Tags Admin Dash Board
@@ -70,6 +72,7 @@ func DashBord(c *gin.Context) {
 	successRes := response.ClientResponse(http.StatusOK, "admin dashboard displayed fine", adminDashBoard, nil)
 	c.JSON(http.StatusOK, successRes)
 }
+
 // @Summary Approve Order
 // @Description Approve Order from admin side which is in processing state
 // @Tags Admin Order Management
@@ -79,14 +82,14 @@ func DashBord(c *gin.Context) {
 // @Param id path string true "Order Id"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /admin/orders/approve-order/{id} [get]
+// @Router /admin/order/approve-order/{id} [post]
 func ApproveOrder(c *gin.Context) {
 
 	orderId := c.Param(models.Order_ID)
 
 	err := usecase.ApproveOrder(orderId)
 
-	if errors.Is(err, models.OrderIsAlreadyPlaced) || errors.Is(err,models.OrderIsAlreadyCancelled){
+	if errors.Is(err, models.OrderIsAlreadyPlaced) || errors.Is(err, models.OrderIsAlreadyCancelled) {
 		errorRes := response.ClientResponse(http.StatusBadRequest, "Bad request", nil, err.Error())
 		c.JSON(http.StatusInternalServerError, errorRes)
 		return
@@ -102,6 +105,7 @@ func ApproveOrder(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 
 }
+
 // @Summary Cancel Order Admin
 // @Description Cancel Order from admin side
 // @Tags Admin Order Management
@@ -111,7 +115,7 @@ func ApproveOrder(c *gin.Context) {
 // @Param id query string true "Order ID"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /admin/orders/cancel-order/{id} [get]
+// @Router /admin/order/cancel-order/{id} [delete]
 func CancelOrderFromAdminSide(c *gin.Context) {
 
 	orderID := c.Param(models.Order_ID)
