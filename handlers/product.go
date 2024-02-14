@@ -37,7 +37,7 @@ func AddProduct(c *gin.Context) {
 	}
 
 	ProductResponse, err := usecase.AddProduct(product)
-	
+
 	if errors.Is(err, models.QuantityIsLessThanZero) || errors.Is(err, models.PriceIsLessThanZero) || errors.Is(err, models.ProductNameIsAlredyExist) {
 
 		errRes := response.ClientResponse(http.StatusBadRequest, "request is not correct", nil, err.Error())
@@ -111,16 +111,17 @@ func DeleteProduct(c *gin.Context) {
 
 //SEE ALL PRODUCT TO ADMIN
 
-// @Summary Get Products Details to admin
-// @Description Retrieve all product Details with pagination to Admin
-// @Tags Admin Product
+// @Summary GET products DETAILS FROM ADMIN
+// @Description Products details
+// @Tags Admin Order Management
 // @Accept json
 // @Produce json
-// @Param page path string true "Page number"
-// @Param count query string true "Page Count"
+// @Security Bearer
+// @Param page path int true "page number"
+// @Param count query int true "count"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /admin/products/page/{page} [get]
+// @Router /admin/products/{page} [get]
 func SeeAllProductToAdmin(c *gin.Context) {
 
 	pagestr := c.Param(models.Page)
@@ -187,11 +188,12 @@ func FilterCategory(c *gin.Context) {
 // @Tags User Product
 // @Accept json
 // @Produce json
-// @Param page path string true "Page number"
-// @Param count query string true "Page Count"
+// @Security Bearer
+// @Param page path int true "Page number"
+// @Param count query int true "Page Count"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /products/page/{page} [get]
+// @Router /product/{page} [get]
 func SeeAllProductToUser(c *gin.Context) {
 
 	pagestr := c.Param(models.Page)

@@ -44,6 +44,7 @@ func OrderItemsFromCart(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 
 }
+
 // @Summary Get Order Details to user side
 // @Description Get all order details done by user to user side
 // @Tags User Order
@@ -128,14 +129,15 @@ func CancelOrder(c *gin.Context) {
 	succesesRes := response.SuccessClientResponse(http.StatusOK, "order is cancelled:::")
 	c.JSON(http.StatusOK, succesesRes)
 }
+
 // @Summary Place Order
 // @Description Place order from the user side
 // @Tags User Order Management
 // @Accept json
 // @Produce json
 // @Security Bearer
-// @Param id path string true "Address ID"
-// @Param id path string true "Payment"
+// @Param id path int true "Address ID"
+// @Param id path int true "Payment"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
 // @Router /place-order/{id}/{id} [get]
@@ -146,7 +148,7 @@ func PlaceOrder(c *gin.Context) {
 	paymentMethod := c.Param(models.Payment)
 	addressId, err := strconv.Atoi(straddress)
 
-	if err != nil  {
+	if err != nil {
 
 		errorRes := response.ClientResponse(http.StatusBadRequest, "string conversion failed", nil, err.Error())
 		c.JSON(http.StatusInternalServerError, errorRes)
@@ -156,14 +158,13 @@ func PlaceOrder(c *gin.Context) {
 	if paymentMethod == "1" {
 
 		Invoice, err := usecase.ExecutePurchaseCOD(userId, addressId)
-		
+
 		if errors.Is(err, models.CartEmpty) {
 
 			errorRes := response.ClientResponse(http.StatusBadRequest, "record not found", nil, err.Error())
 			c.JSON(http.StatusInternalServerError, errorRes)
 			return
 		}
-
 
 		if err != nil {
 			errorRes := response.ClientResponse(http.StatusInternalServerError, "error in making cod ", nil, err.Error())
@@ -174,6 +175,7 @@ func PlaceOrder(c *gin.Context) {
 		c.JSON(http.StatusOK, successRes)
 	}
 }
+
 // @Summary ORDER DELIVERD
 // @Description Order deliverd from user side
 // @Tags User Order Management
@@ -188,8 +190,7 @@ func OrderDelivered(c *gin.Context) {
 
 	orderID := c.Param(models.Order_ID)
 	err := usecase.OrderDelivered(orderID)
-	
-	
+
 	if err != nil {
 		errRes := response.ClientResponse(http.StatusBadRequest, "order could not be delivered", nil, err.Error())
 		c.JSON(http.StatusInternalServerError, errRes)
@@ -200,6 +201,7 @@ func OrderDelivered(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 
 }
+
 // @Summary RETURN ORDER
 // @Description return order from the user side
 // @Tags User Order Management
@@ -217,7 +219,7 @@ func ReturnOrder(c *gin.Context) {
 	err := usecase.ReturnOrder(orderId)
 
 	if errors.Is(err, models.CannotReturn) || errors.Is(err, models.AlreadyReturn) || errors.Is(err, models.AlreadyCancelled) {
-		
+
 		errRes := response.ClientResponse(http.StatusBadRequest, "bad request", nil, err.Error())
 
 		c.JSON(http.StatusBadRequest, errRes)
@@ -226,7 +228,7 @@ func ReturnOrder(c *gin.Context) {
 	}
 
 	if err != nil {
-		
+
 		errRes := response.ClientResponse(http.StatusInternalServerError, "order could not be returned", nil, err.Error())
 
 		c.JSON(http.StatusInternalServerError, errRes)
@@ -237,17 +239,18 @@ func ReturnOrder(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 
 }
+
 // @Summary GET ORDER DETAILS FROM ADMIN
 // @Description Order details from admin side
 // @Tags Admin Order Management
 // @Accept json
 // @Produce json
 // @Security Bearer
-//@Param page path string true "page number"
-//@Param pagesize query string true "page size"
+// @Param page path int true "page number"
+// @Param count query int true "count"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /admin/order/{id} [get]
+// @Router /admin/order/{page} [get]
 func GetOrderDetailsFromAdmin(c *gin.Context) {
 
 	pageStr := c.Param(models.Page)

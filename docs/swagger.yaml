@@ -288,7 +288,7 @@ paths:
       summary: UPDATE CATEGORY
       tags:
       - Admin category
-  /admin/category/page:
+  /admin/category/{page}:
     get:
       consumes:
       - application/json
@@ -320,28 +320,7 @@ paths:
       summary: GET CATEGORY
       tags:
       - Admin category
-  /admin/dashboard:
-    get:
-      consumes:
-      - application/json
-      description: Get Amin Home Page with Complete Details
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/response.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.Response'
-      security:
-      - Bearer: []
-      summary: Admin Dashboard
-      tags:
-      - Admin Dash Board
-  /admin/offer/category-offer:
+  /admin/category/add-category-offer:
     post:
       consumes:
       - application/json
@@ -369,6 +348,27 @@ paths:
       summary: Add  Category Offer
       tags:
       - Admin Offer Management
+  /admin/dashboard:
+    get:
+      consumes:
+      - application/json
+      description: Get Amin Home Page with Complete Details
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Admin Dashboard
+      tags:
+      - Admin Dash Board
   /admin/offer/coupons:
     get:
       consumes:
@@ -419,7 +419,7 @@ paths:
       tags:
       - Admin Offer Management
   /admin/offer/coupons/expire/{id}:
-    patch:
+    post:
       consumes:
       - application/json
       description: Expire Coupon by admin which are already present by passing coupon
@@ -446,7 +446,125 @@ paths:
       summary: Expire Coupon
       tags:
       - Admin Offer Management
-  /admin/offer/product-offer:
+  /admin/order/{page}:
+    get:
+      consumes:
+      - application/json
+      description: Order details from admin side
+      parameters:
+      - description: page number
+        in: path
+        name: page
+        required: true
+        type: integer
+      - description: count
+        in: query
+        name: count
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: GET ORDER DETAILS FROM ADMIN
+      tags:
+      - Admin Order Management
+  /admin/order/approve-order/{id}:
+    post:
+      consumes:
+      - application/json
+      description: Approve Order from admin side which is in processing state
+      parameters:
+      - description: Order Id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Approve Order
+      tags:
+      - Admin Order Management
+  /admin/order/cancel-order/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Cancel Order from admin side
+      parameters:
+      - description: Order ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Cancel Order Admin
+      tags:
+      - Admin Order Management
+  /admin/products/{page}:
+    get:
+      consumes:
+      - application/json
+      description: Products details
+      parameters:
+      - description: page number
+        in: path
+        name: page
+        required: true
+        type: integer
+      - description: count
+        in: query
+        name: count
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: GET products DETAILS FROM ADMIN
+      tags:
+      - Admin Order Management
+  /admin/products/add-product-offer:
     post:
       consumes:
       - application/json
@@ -474,122 +592,6 @@ paths:
       summary: Add  Product Offer
       tags:
       - Admin Offer Management
-  /admin/order/{id}:
-    get:
-      consumes:
-      - application/json
-      description: Order details from admin side
-      parameters:
-      - description: page number
-        in: path
-        name: page
-        required: true
-        type: string
-      - description: page size
-        in: query
-        name: pagesize
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/response.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.Response'
-      security:
-      - Bearer: []
-      summary: GET ORDER DETAILS FROM ADMIN
-      tags:
-      - Admin Order Management
-  /admin/orders/approve-order/{id}:
-    get:
-      consumes:
-      - application/json
-      description: Approve Order from admin side which is in processing state
-      parameters:
-      - description: Order Id
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/response.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.Response'
-      security:
-      - Bearer: []
-      summary: Approve Order
-      tags:
-      - Admin Order Management
-  /admin/orders/cancel-order/{id}:
-    get:
-      consumes:
-      - application/json
-      description: Cancel Order from admin side
-      parameters:
-      - description: Order ID
-        in: query
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/response.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.Response'
-      security:
-      - Bearer: []
-      summary: Cancel Order Admin
-      tags:
-      - Admin Order Management
-  /admin/products/page/{page}:
-    get:
-      consumes:
-      - application/json
-      description: Retrieve all product Details with pagination to Admin
-      parameters:
-      - description: Page number
-        in: path
-        name: page
-        required: true
-        type: string
-      - description: Page Count
-        in: query
-        name: count
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/response.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.Response'
-      summary: Get Products Details to admin
-      tags:
-      - Admin Product
   /cancel/{id}:
     get:
       consumes:
@@ -893,12 +895,12 @@ paths:
         in: path
         name: id
         required: true
-        type: string
+        type: integer
       - description: Payment
         in: path
         name: id
         required: true
-        type: string
+        type: integer
       produces:
       - application/json
       responses:
@@ -915,7 +917,7 @@ paths:
       summary: Place Order
       tags:
       - User Order Management
-  /products/page/{page}:
+  /product/{page}:
     get:
       consumes:
       - application/json
@@ -925,12 +927,12 @@ paths:
         in: path
         name: page
         required: true
-        type: string
+        type: integer
       - description: Page Count
         in: query
         name: count
         required: true
-        type: string
+        type: integer
       produces:
       - application/json
       responses:
@@ -942,6 +944,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
       summary: Get Products Details to users
       tags:
       - User Product

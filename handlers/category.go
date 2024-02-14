@@ -124,7 +124,7 @@ func DeleteCategory(c *gin.Context) {
 // @Param count query int false "Page count" default(10)
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /admin/category/page [get]
+// @Router /admin/category/{page} [get]
 func GetAllCategory(c *gin.Context) {
 
 	pageStr := c.Param(models.Page)
