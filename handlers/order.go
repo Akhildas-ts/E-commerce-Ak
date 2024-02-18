@@ -11,6 +11,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary Order Items From Cart
+// @Description Order Items from cart
+// @Tags User Order Management
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Param OrderFromCart body models.OrderFromCart true "Items Ordering From The Cart"
+// @Success 200 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /order [post]
 func OrderItemsFromCart(c *gin.Context) {
 
 	id, _ := c.Get(models.User_id)
@@ -218,7 +228,7 @@ func ReturnOrder(c *gin.Context) {
 
 	err := usecase.ReturnOrder(orderId)
 
-	if errors.Is(err, models.CannotReturn) || errors.Is(err, models.AlreadyReturn) || errors.Is(err, models.AlreadyCancelled) {
+	if errors.Is(err, models.CannotReturn) || errors.Is(err, models.AlreadyReturn) || errors.Is(err, models.AlreadyCancelled) || errors.Is(err, models.ShipmentStatusIsNotDeliverd) {
 
 		errRes := response.ClientResponse(http.StatusBadRequest, "bad request", nil, err.Error())
 

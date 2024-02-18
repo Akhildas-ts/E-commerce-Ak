@@ -28,23 +28,30 @@ func UserRoutes(r *gin.RouterGroup, db *gorm.DB) *gin.RouterGroup {
 		r.GET("/userdetails", handlers.UserDetails)
 
          
-		// r.POST("/addbillingaddress",handlers.AddBillingAddress)
+		
 
 		// CART
 		cart := r.Group("/cart")
-
 		{
 			cart.POST("/addtocart/:product_id", handlers.AddToCart)
 			cart.DELETE("/removefromcart/:product_id", handlers.RemoveFromCart)
 			cart.GET("/displaycart", handlers.DisplayCart)
 
 		}
+
+
+
+		// Product 
+
 		product := r.Group("/product")
 		{
-
 			product.GET("/:page", handlers.SeeAllProductToUser)
 
 		}
+
+		
+		r.GET("/:page", handlers.SeeAllProductToUser)
+
 
 		r.GET("/checkout", handlers.CheckOut)
 		r.GET("/place-order/:address_id/:payment", handlers.PlaceOrder)
@@ -69,8 +76,7 @@ func UserRoutes(r *gin.RouterGroup, db *gorm.DB) *gin.RouterGroup {
 		r.POST("/coupon/apply", handlers.ApplyCoupon)
 		r.GET("/referral/apply",handlers.ApplyReferral)
 		r.POST("/filter", handlers.FilterCategory)
-		r.GET("/:page", handlers.SeeAllProductToUser)
-
+	
 		
 		r.POST("/addimage",handlers.UploadImage)
 		

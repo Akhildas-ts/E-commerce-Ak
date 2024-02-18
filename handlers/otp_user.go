@@ -8,6 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
+
 // @Summary  OTP login
 // @Description Send OTP to Authenticate user
 // @Tags User OTP Login
@@ -22,7 +23,7 @@ func SendOTP(c *gin.Context) {
 	var phone models.OTPData
 
 	if err := c.ShouldBindJSON(&phone); err != nil {
-		errres := response.ClientResponse(http.StatusBadGateway, "(otp)- field provied wrong formate", nil,err.Error())
+		errres := response.ClientResponse(http.StatusBadGateway, "(otp)- field provied wrong formate", nil, err.Error())
 		c.JSON(http.StatusBadRequest, errres)
 		return
 	}
@@ -40,6 +41,7 @@ func SendOTP(c *gin.Context) {
 	c.JSON(http.StatusOK, succesRes)
 
 }
+
 // @Summary Verify OTP
 // @Description Verify OTP by passing the OTP in order to authenticate user
 // @Tags User OTP Login

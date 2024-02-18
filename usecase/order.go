@@ -192,7 +192,7 @@ func ExecutePurchaseCOD(userID int, addressID int) (models.Invoice, error) {
 		return models.Invoice{}, err
 	}
 	if !ok {
-		return models.Invoice{},models.CartEmpty
+		return models.Invoice{}, models.CartEmpty
 	}
 	cartDetails, err := repository.DisplayCart(userID)
 	if err != nil {
@@ -244,19 +244,21 @@ func ReturnOrder(orderid string) error {
 	timeDelivered, err := repository.GetTimeDeliverdTime(orderid)
 
 	if err != nil {
-		fmt.Println("error 2")
+
 		return err
 	}
 
 	currentTime := time.Now()
 	returnPeriod := timeDelivered.Add(time.Hour * 24 * 7)
 
-	fmt.Println("currentTime_", currentTime)
-	fmt.Println("returnTime", returnPeriod)
 	if currentTime.After(returnPeriod) {
 
 		return models.CannotReturn
 
+	}
+
+	if shipmentStatus != "delivered" {
+		return  models.ShipmentStatusIsNotDeliverd
 	}
 
 	if shipmentStatus == "return" {
@@ -266,6 +268,11 @@ func ReturnOrder(orderid string) error {
 
 	if shipmentStatus == "cancelled" {
 		return models.AlreadyCancelled
+	}
+
+	if !currentTime.Before((returnPeriod)) {
+
+		return errors.New("time is over ")
 	}
 
 	if shipmentStatus == "delivered" && currentTime.Before(returnPeriod) {

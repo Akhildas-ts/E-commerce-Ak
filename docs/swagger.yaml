@@ -6,6 +6,31 @@ definitions:
       id:
         type: integer
     type: object
+  domain.Products:
+    properties:
+      brand_id:
+        type: integer
+      category_id:
+        type: integer
+      design_description:
+        type: string
+      id:
+        type: integer
+      is_deleted:
+        type: boolean
+      name:
+        type: string
+      price:
+        type: number
+      product_status:
+        type: string
+      quantity:
+        type: integer
+      sku:
+        type: string
+    required:
+    - name
+    type: object
   models.AddCoupon:
     properties:
       coupon:
@@ -84,6 +109,16 @@ definitions:
     required:
     - phone
     type: object
+  models.OrderFromCart:
+    properties:
+      address_id:
+        type: integer
+      payment_id:
+        type: integer
+    required:
+    - address_id
+    - payment_id
+    type: object
   models.ProductOfferReceiver:
     properties:
       discount_percentage:
@@ -98,6 +133,13 @@ definitions:
     - discount_percentage
     - offer_name
     - product_id
+    type: object
+  models.ProductUpdate:
+    properties:
+      product_id:
+        type: integer
+      quantity:
+        type: integer
     type: object
   models.SetNewName:
     properties:
@@ -532,6 +574,126 @@ paths:
       summary: Cancel Order Admin
       tags:
       - Admin Order Management
+  /admin/products:
+    delete:
+      consumes:
+      - application/json
+      description: Delete product from Admin side
+      parameters:
+      - description: Product ID for deletion
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful response
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.Products'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Delete Product
+      tags:
+      - Admin Products
+    post:
+      consumes:
+      - application/json
+      description: Add product from Admin
+      parameters:
+      - description: Product object to be added
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Products'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful response
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.Products'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Add Product
+      tags:
+      - Admin Products
+    put:
+      consumes:
+      - application/json
+      description: Update product from Admin side
+      parameters:
+      - description: Product object to be Updated
+        in: body
+        name: p
+        required: true
+        schema:
+          $ref: '#/definitions/models.ProductUpdate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful response
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.Products'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Update Products
+      tags:
+      - Admin Products
   /admin/products/{page}:
     get:
       consumes:
@@ -826,6 +988,34 @@ paths:
       summary: LogIn functionality for user
       tags:
       - User Authentication
+  /order:
+    post:
+      consumes:
+      - application/json
+      description: Order Items from cart
+      parameters:
+      - description: Items Ordering From The Cart
+        in: body
+        name: OrderFromCart
+        required: true
+        schema:
+          $ref: '#/definitions/models.OrderFromCart'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Order Items From Cart
+      tags:
+      - User Order Management
   /order/{id}:
     put:
       consumes:
@@ -921,7 +1111,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: Retrieve all product Details with pagination to users
+      description: Upload images for products..
       parameters:
       - description: Page number
         in: path
@@ -946,7 +1136,7 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - Bearer: []
-      summary: Get Products Details to users
+      summary: UPLOAD IMAGE
       tags:
       - User Product
   /referral/apply:

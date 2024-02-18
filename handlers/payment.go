@@ -32,7 +32,7 @@ func MakePaymentRazorPay(c *gin.Context) {
 		"order_id":    orderDetail.OrderId,
 
 		"total": int(orderDetail.FinalPrice),
-	})
+	}) 
 
 }
 

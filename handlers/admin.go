@@ -39,9 +39,18 @@ func AdminLogin(c *gin.Context) {
 
 	admin, err := usecase.AdminLogin(adminmodel)
 
+
+	if errors.Is(err,models.PasswordIsNil) || errors.Is(err,models.PasswordIsNotCorrect) {
+
+		erres := response.ClientResponse(http.StatusBadGateway, "", nil, err.Error())
+		c.JSON(http.StatusBadGateway, erres)
+		return
+
+	}
+
 	if err != nil {
 
-		erres := response.ClientResponse(http.StatusBadGateway, "server error from admin use case", nil, err)
+		erres := response.ClientResponse(http.StatusBadGateway, "server error from admin use case", nil, err.Error())
 		c.JSON(http.StatusBadGateway, erres)
 		return
 	}
