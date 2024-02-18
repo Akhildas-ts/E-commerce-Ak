@@ -108,7 +108,10 @@ func ApproveOrder(orderid string) error {
 
 	if shipmentStatus == "processing" {
 
-		fmt.Println("reached")
+		fmt.Println("reacheds")
+		fmt.Println("reacheds")
+		fmt.Println("reacheds")
+		fmt.Println("reacheds")
 
 		err := repository.ApproveOrder(orderid)
 
