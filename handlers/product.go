@@ -18,6 +18,18 @@ import (
 
 //ADD PRODUCT
 
+// @Summary Add Product
+// @Description Add product from Admin
+// @Tags Admin Products
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Param product body domain.Products true "Product object to be added"
+// @Success 200 {object} response.Response{data=domain.Products} "Successful response"
+// @Failure 400 {object} response.Response{} "Bad Request"
+// @Failure 404 {object} response.Response{} "Not Found"
+// @Failure 500 {object} response.Response{} "Internal Server Error"
+// @Router /admin/products [post]
 func AddProduct(c *gin.Context) {
 
 	var product domain.Products
@@ -58,6 +70,18 @@ func AddProduct(c *gin.Context) {
 
 //UPDATE THE PRODUCT*****
 
+// @Summary Update Products
+// @Description Update product from Admin side
+// @Tags Admin Products
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Param p  body models.ProductUpdate true "Product object to be Updated"
+// @Success 200 {object} response.Response{data=domain.Products} "Successful response"
+// @Failure 400 {object} response.Response{} "Bad Request"
+// @Failure 404 {object} response.Response{} "Not Found"
+// @Failure 500 {object} response.Response{} "Internal Server Error"
+// @Router /admin/products [put]
 func UpdateProduct(c *gin.Context) {
 
 	var p models.ProductUpdate
@@ -84,13 +108,25 @@ func UpdateProduct(c *gin.Context) {
 
 /// DELET THE PROUDCT ****
 
+// @Summary Delete Product
+// @Description Delete product from Admin side
+// @Tags Admin Products
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Param id  query string true "Product ID for deletion"
+// @Success 200 {object} response.Response{data=domain.Products} "Successful response"
+// @Failure 400 {object} response.Response{} "Bad Request"
+// @Failure 404 {object} response.Response{} "Not Found"
+// @Failure 500 {object} response.Response{} "Internal Server Error"
+// @Router /admin/products [delete]
 func DeleteProduct(c *gin.Context) {
 	productID := c.Query(models.ID)
 
 	if productID == "" {
 
-		errRes := response.ClientResponse(http.StatusNotFound, "there is no product id", nil, errors.New("no id"))
-		c.JSON(http.StatusBadGateway, errRes)
+		errRes := response.ClientResponse(http.StatusNotFound, "there is no product id", nil, fmt.Errorf("no ID provided"))
+		c.JSON(http.StatusBadRequest, errRes)
 		return
 
 	}
@@ -226,8 +262,18 @@ func SeeAllProductToUser(c *gin.Context) {
 
 }
 
-//UPLOAD IMAGE
-
+// UPLOAD IMAGE
+// @Summary UPLOAD IMAGE
+// @Description Upload images for products..
+// @Tags User Product
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Param page path int true "Page number"
+// @Param count query int true "Page Count"
+// @Success 200 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /product/{page} [get]
 func UploadImage(c *gin.Context) {
 
 	cfg, err := config.LoadConfig()

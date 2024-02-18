@@ -18,8 +18,8 @@ func AdminLogin(adminmodel models.AdminLogin) (domain.TokenAdmin, error) {
 
 	AdminDetail, err := repository.AdminLogin(adminmodel)
 	if err != nil {
-		fmt.Println("error:1")
-		return domain.TokenAdmin{}, errors.New("demo : repository adminlogin")
+		
+		return domain.TokenAdmin{}, errors.New("given mail formate have")
 
 	}
 
@@ -34,7 +34,7 @@ func AdminLogin(adminmodel models.AdminLogin) (domain.TokenAdmin, error) {
 
 	if err != nil {
 
-		return domain.TokenAdmin{}, errors.New("demo : repository adminlogin")
+		return domain.TokenAdmin{},models.PasswordIsNotCorrect
 
 	}
 

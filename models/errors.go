@@ -17,6 +17,10 @@ var (
 	AlreadyReturn = errors.New("already return")
 	AlreadyCancelled = errors.New("already canncelled")
 	AddresAlreadyExist = errors.New("addres is already exist")
+	PasswordIsNil = errors.New("passwod is nil")
+	PasswordIsNotCorrect = errors.New("password is not correct")
+	ShipmentStatusIsNotDeliverd = errors.New("shipment Status is not delivered")
+
 	
 
 )

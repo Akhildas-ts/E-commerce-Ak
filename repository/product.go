@@ -35,7 +35,7 @@ func AddProduct(product domain.Products) (domain.Products, error) {
 	}
 
 	if count > 0 {
-		return domain.Products{},models.PriceIsLessThanZero
+		return domain.Products{}, models.PriceIsLessThanZero
 	}
 
 	err := database.DB.Raw("INSERT INTO products (name, sku, category_id, design_description, brand_id, quantity, price, product_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING name, sku, category_id, design_description, brand_id, quantity, price, product_status", product.Name, product.SKU, product.CategoryID, product.DesignDescription, product.BrandID, product.Quantity, product.Price, product.ProductStatus).Scan(&p).Error
@@ -121,7 +121,7 @@ func UpdateCategory(current string, new string) (domain.Category, error) {
 
 		return domain.Category{}, errors.New("new category name already exists")
 	}
-
+	fmt.Println("exirt", existingCategory)
 	if err := database.DB.Exec("update categories set category_name =$1 where category_name=$2", new, current).Error; err != nil {
 
 		return domain.Category{}, err
@@ -225,9 +225,6 @@ func DeleteProduct(productId string) error {
 
 func CheckValidityOfCategory(data map[string]int) error {
 
-
-	
-
 	for _, id := range data {
 		var count int
 		err := database.DB.Raw("select count(*) from categories where id = ?", id).Scan(&count).Error
@@ -237,7 +234,6 @@ func CheckValidityOfCategory(data map[string]int) error {
 		if count == 0 {
 			return errors.New("there is no category id")
 		}
-
 
 		if count < 1 {
 
@@ -264,7 +260,7 @@ func GetProductFromCategory(id int) ([]models.ProductBrief, error) {
 		return []models.ProductBrief{}, errors.New("there is no product have in these category")
 	}
 
-	fmt.Println("product",product)
+	fmt.Println("product", product)
 	return product, nil
 }
 
@@ -338,9 +334,7 @@ func GetAllCategory(page int, count int) ([]domain.Category, error) {
 
 }
 
-func 	AddProductOffer(productOffer models.ProductOfferReceiver) error {
-
-	
+func AddProductOffer(productOffer models.ProductOfferReceiver) error {
 
 	if productOffer.OfferLimit <= 0 {
 
@@ -350,7 +344,6 @@ func 	AddProductOffer(productOffer models.ProductOfferReceiver) error {
 	if productOffer.DiscountPercentage < 0 {
 		return errors.New("discount price is less than zero ")
 	}
-
 
 	//check if the offer with the offer name already exist 	in the database
 
@@ -394,14 +387,14 @@ func 	AddProductOffer(productOffer models.ProductOfferReceiver) error {
 
 }
 
-func CheckProductPrice(productID int)(float64,error){
+func CheckProductPrice(productID int) (float64, error) {
 
 	var price float64
 
-	err := database.DB.Raw("SELECT price from products WHERE id = ?",productID).Scan(&price).Error
+	err := database.DB.Raw("SELECT price from products WHERE id = ?", productID).Scan(&price).Error
 	if err != nil {
-		return 0.0,err
+		return 0.0, err
 	}
 
-	return price,nil
+	return price, nil
 }
