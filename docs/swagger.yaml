@@ -337,7 +337,7 @@ paths:
       description: Get all category
       parameters:
       - description: Page number
-        in: path
+        in: query
         name: page
         required: true
         type: integer

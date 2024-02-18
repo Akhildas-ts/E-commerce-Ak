@@ -176,6 +176,11 @@ func AddCategoryOffer(c *gin.Context) {
 	}
 
 	err := usecase.AddCategoryOffer(categoryOffer)
+	if errors.Is(err, models.OfferLimitGreater) || errors.Is(err, models.OfferNameCantBeNil) || errors.Is(err, models.ThereIsNOCategory) || errors.Is(err, models.DiscountPriceIsLessThanZero) {
+		errRes := response.ClientResponse(http.StatusBadRequest, "request was not correct", nil, err.Error())
+		c.JSON(http.StatusBadGateway, errRes)
+		return
+	}
 
 	if err != nil {
 		errRes := response.ClientResponse(http.StatusInternalServerError, "could not add offer", nil, err.Error())

@@ -17,7 +17,7 @@ func CouponExist(couponName string) (bool, error) {
 
 	err := database.DB.Raw("select count(*) from coupons where coupon =?", couponName).Scan(&count).Error
 	if err != nil {
-		
+
 		return false, err
 	}
 
@@ -181,11 +181,11 @@ func UpdateUsedCoupon(coupon string, userID int) (bool, error) {
 
 	return true, nil
 }
-func UpdateCouponDetails(discountPrice float64,userId int) error {
+func UpdateCouponDetails(discountPrice float64, userId int) error {
 
 	if discountPrice != 0.0 {
 
-		err := database.DB.Exec(" update used_coupons set used = true where user_id = ?",userId).Error
+		err := database.DB.Exec(" update used_coupons set used = true where user_id = ?", userId).Error
 
 		if err != nil {
 			return err
@@ -195,22 +195,33 @@ func UpdateCouponDetails(discountPrice float64,userId int) error {
 }
 
 func AddCategoryOffer(categoryOffer models.CategoryOfferReceiver) error {
+	var count int
 
-	if categoryOffer.OfferName == ""{
-		return errors.New("offer name can't be  nil")
+	errRes := database.DB.Raw("SELECT COUNT(*) FROM categories WHERE id = ?", categoryOffer.CategoryID).Scan(&count).Error
+
+	if errRes != nil {
+		return errRes
 	}
 
-	if categoryOffer.DiscountPercentage < 0 {
-		return errors.New("discount percentage is less than zero")
+	if count == 0 {
+		return models.ThereIsNOCategory
+	}
+
+	if categoryOffer.OfferName == "" {
+		return models.OfferNameCantBeNil
+	}
+
+	if categoryOffer.DiscountPercentage <=0 {
+		return models.DiscountPriceIsLessThanZero
 
 	}
 
-	if categoryOffer.OfferLimit <+ 0 {
-		return errors.New("offer limit must be greater than zero ")
+	if categoryOffer.OfferLimit <=0 {
+		return models.OfferLimitGreater
 	}
 
 	// check if the offer with the offer name already exist in the database
-	var count int
+
 	err := database.DB.Raw("select count(*) from category_offers where offer_name = ?", categoryOffer.OfferName).Scan(&count).Error
 	if err != nil {
 		return err
@@ -239,6 +250,7 @@ func AddCategoryOffer(categoryOffer models.CategoryOfferReceiver) error {
 	endDate := time.Now().Add(time.Hour * 24 * 5)
 	err = database.DB.Exec("INSERT INTO category_offers (category_id, offer_name, discount_percentage, start_date, end_date, offer_limit,offer_used) VALUES (?, ?, ?, ?, ?, ?, ?)", categoryOffer.CategoryID, categoryOffer.OfferName, categoryOffer.DiscountPercentage, startDate, endDate, categoryOffer.OfferLimit, 0).Error
 	if err != nil {
+		fmt.Println("heusufposiufp")
 		return err
 	}
 
