@@ -79,7 +79,7 @@ func ExpireCoupon(couponID int)error {
 		return nil
 	}
 
-	return errors.New("coupon does not exists")
+	return errors.New("coupon does not exists's")
 
 
 }
