@@ -89,11 +89,6 @@ definitions:
         type: integer
       offer_name:
         type: string
-    required:
-    - category_id
-    - discount_percentage
-    - offer_limit
-    - offer_name
     type: object
   models.CouponAddUser:
     properties:

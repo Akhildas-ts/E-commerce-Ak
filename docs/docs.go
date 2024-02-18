@@ -1860,12 +1860,6 @@ const docTemplate = `{
         },
         "models.CategoryOfferReceiver": {
             "type": "object",
-            "required": [
-                "category_id",
-                "discount_percentage",
-                "offer_limit",
-                "offer_name"
-            ],
             "properties": {
                 "category_id": {
                     "type": "integer"
