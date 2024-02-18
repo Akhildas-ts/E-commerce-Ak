@@ -22,7 +22,7 @@ import (
 //	@name						Authorization
 //	@license.name	Apache 2.0
 //	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
-//	@host			arundas.cloud
+//	@host			localhost:8080
 //	@BasePath		/
 //
 // @schemes	http
@@ -32,7 +32,7 @@ func main() {
 	docs.SwaggerInfo.Title = "Ecommerce_site"
 	docs.SwaggerInfo.Description = "Ecommerce shirt selling application suing Golang"
 	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = "arundas.cloud"
+	docs.SwaggerInfo.Host = "localhost:8080"
 	docs.SwaggerInfo.BasePath = ""
 	docs.SwaggerInfo.Schemes = []string{"http"}
 

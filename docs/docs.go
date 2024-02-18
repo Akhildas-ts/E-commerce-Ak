@@ -297,7 +297,7 @@ const docTemplate = `{
                         "type": "integer",
                         "description": "Page number",
                         "name": "page",
-                        "in": "path",
+                        "in": "query",
                         "required": true
                     },
                     {

@@ -120,7 +120,7 @@ func DeleteCategory(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security Bearer
-// @Param page path int true "Page number"
+// @Param page query int true "Page number"
 // @Param count query int false "Page count" default(10)
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}

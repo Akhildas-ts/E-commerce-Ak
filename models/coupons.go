@@ -41,8 +41,8 @@ type ProductOfferReceiver struct {
 }
 
 type CategoryOfferReceiver struct {
-	CategoryID         uint   `json:"category_id" binding:"required"`
-	OfferName          string `json:"offer_name" binding:"required"`
-	DiscountPercentage int    `json:"discount_percentage" binding:"required"`
-	OfferLimit         int    `json:"offer_limit" binding:"required"`
+	CategoryID         uint   `json:"category_id" `
+	OfferName          string `json:"offer_name"`
+	DiscountPercentage int    `json:"discount_percentage"`
+	OfferLimit         int    `json:"offer_limit"`
 }
