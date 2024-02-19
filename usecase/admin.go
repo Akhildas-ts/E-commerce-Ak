@@ -40,7 +40,6 @@ func AdminLogin(adminmodel models.AdminLogin) (domain.TokenAdmin, error) {
 
 	var AdminDetailsResponse models.AdminDetailsResponse
 
-	fmt.Println("ad", AdminDetailsResponse)
 
 	err = copier.Copy(&AdminDetailsResponse,&AdminDetail) 
 
@@ -52,7 +51,7 @@ func AdminLogin(adminmodel models.AdminLogin) (domain.TokenAdmin, error) {
 	tokenString, err := helper.GenerateTokenAdmin(AdminDetailsResponse)
 
 	if err != nil {
-		fmt.Println("error:3")
+		
 		return domain.TokenAdmin{}, errors.New("demo : repository adminlogin")
 
 	}
@@ -108,10 +107,7 @@ func ApproveOrder(orderid string) error {
 
 	if shipmentStatus == "processing" {
 
-		fmt.Println("reachedsdds")
-		fmt.Println("reachedsdfs")
-		fmt.Println("reacheddsfas")
-		fmt.Println("reachedsdfs")
+	
 
 		err := repository.ApproveOrder(orderid)
 
