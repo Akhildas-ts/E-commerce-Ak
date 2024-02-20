@@ -21,9 +21,8 @@ func AddProduct(product domain.Products) (domain.Products, error) {
 
 	errCount := helper.CheckCategoryId(int(product.CategoryID))
 	if errCount != nil {
-		return domain.Products{},errCount
+		return domain.Products{}, errCount
 	}
-	
 
 	if product.Quantity < 0 {
 		return domain.Products{}, models.QuantityIsLessThanZero
@@ -31,8 +30,10 @@ func AddProduct(product domain.Products) (domain.Products, error) {
 	}
 
 	if product.Price < 0 {
+
 		return domain.Products{}, models.PriceIsLessThanZero
 	}
+	
 
 	errorRes := database.DB.Raw("select count (*) from products where name = ?", product.Name).Scan(&count)
 
@@ -41,7 +42,7 @@ func AddProduct(product domain.Products) (domain.Products, error) {
 	}
 
 	if count > 0 {
-		return domain.Products{}, models.PriceIsLessThanZero
+		return domain.Products{}, models.ProductNameIsAlredyExist
 	}
 
 	err := database.DB.Raw("INSERT INTO products (name, sku, category_id, design_description, brand_id, quantity, price, product_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING name, sku, category_id, design_description, brand_id, quantity, price, product_status", product.Name, product.SKU, product.CategoryID, product.DesignDescription, product.BrandID, product.Quantity, product.Price, product.ProductStatus).Scan(&p).Error

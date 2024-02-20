@@ -15,7 +15,7 @@ func AddProduct(product domain.Products) (domain.Products, error) {
 		
 
 		return domain.Products{}, err
-
+      
 	}
 	return ProductResponse, nil
 

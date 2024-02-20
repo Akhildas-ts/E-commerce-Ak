@@ -1197,6 +1197,11 @@ const docTemplate = `{
         },
         "/filter": {
             "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Show all the Products belonging to a specified category",
                 "consumes": [
                     "application/json"
@@ -1473,7 +1478,7 @@ const docTemplate = `{
                         "Bearer": []
                     }
                 ],
-                "description": "Upload images for products..",
+                "description": "Retrieve all product Details with pagination to users",
                 "consumes": [
                     "application/json"
                 ],
@@ -1483,7 +1488,7 @@ const docTemplate = `{
                 "tags": [
                     "User Product"
                 ],
-                "summary": "UPLOAD IMAGE",
+                "summary": "Get Products Details to users",
                 "parameters": [
                     {
                         "type": "integer",

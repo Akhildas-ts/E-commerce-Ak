@@ -108,8 +108,6 @@ func AddAddress(userId int, address models.AddressInfo) error {
 	return nil
 }
 
-
-
 func UserDetails(userid int) (models.UsersProfileDetails, error) {
 
 	var userdetails models.UsersProfileDetails
@@ -133,56 +131,56 @@ func UserDetails(userid int) (models.UsersProfileDetails, error) {
 func GetAllAddresses(userid int) ([]models.AddressInfoResponse, error) {
 
 	var addressResponse []models.AddressInfoResponse
+	var count int
 
-	err := database.DB.Raw(`select * from addresses where user_id=$1`, userid).Scan(&addressResponse).Error
+	err := database.DB.Raw("select count(*) from addresses where user_id=?", userid).Scan(&count).Error
+	fmt.Println("count ",count)
 
-	if addressResponse == nil {
 
+	if count == 0 {
 		fmt.Println("there is no addres from : repo")
-		return []models.AddressInfoResponse{}, err
+		return []models.AddressInfoResponse{}, errors.New("there is no address")
+
 	}
+
+
 
 	if err != nil {
 
 		return []models.AddressInfoResponse{}, errors.New("cound not find addresses from user")
 	}
 
-	fmt.Println("addres respo is :", addressResponse)
-
 	return addressResponse, nil
 }
 
-
-func GetAllPaymentOption() ([]models.PaymentDetails,error)  {
+func GetAllPaymentOption() ([]models.PaymentDetails, error) {
 
 	var paymentmethod []models.PaymentDetails
 
 	err := database.DB.Raw("select * from  payment_methods").Scan(&paymentmethod).Error
 
 	if err != nil {
-		return []models.PaymentDetails{},err
+		return []models.PaymentDetails{}, err
 	}
 
-	return paymentmethod,nil
+	return paymentmethod, nil
 }
 
-func GetReferralAndTotalAmount(userId int ) (float64,float64,error){
+func GetReferralAndTotalAmount(userId int) (float64, float64, error) {
 
-	var cartDetails struct{
-
-		ReferralAmount float64
+	var cartDetails struct {
+		ReferralAmount  float64
 		totalCartAmount float64
 	}
 
+	err := database.DB.Raw("SELECT (SELECT referral_amount from referrals where user_id = ?)AS referral_amount,COALESCE(SUM(total_price),0)AS total_cart_amount from carts WHERE user_id= ?", userId, userId).Scan(&cartDetails).Error
 
-	err := database.DB.Raw("SELECT (SELECT referral_amount from referrals where user_id = ?)AS referral_amount,COALESCE(SUM(total_price),0)AS total_cart_amount from carts WHERE user_id= ?",userId,userId).Scan(&cartDetails).Error
+	if err != nil {
 
-	if err != nil{
-
-		return 0.0,0.0,err
+		return 0.0, 0.0, err
 	}
 
-	return cartDetails.ReferralAmount,cartDetails.totalCartAmount,nil
+	return cartDetails.ReferralAmount, cartDetails.totalCartAmount, nil
 }
 
 func UpdateSomethingBasedOnUserID(tableName string, columnName string, updateValue float64, userID int) error {
@@ -196,13 +194,11 @@ func UpdateSomethingBasedOnUserID(tableName string, columnName string, updateVal
 
 }
 
-func CheckAddress(userid int )error {
-
+func CheckAddress(userid int) error {
 
 	var addres models.AddressInfoResponse
 
-
-	err := database.DB.Raw("select * from addresses where user_id = ?",userid).Scan(&addres).Error
+	err := database.DB.Raw("select * from addresses where user_id = ?", userid).Scan(&addres).Error
 
 	if err != nil {
 		return err

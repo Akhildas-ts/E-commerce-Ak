@@ -3,7 +3,6 @@ package middleware
 import (
 	"ak/helper"
 	"ak/response"
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -14,12 +13,10 @@ func AuthorizationMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		tokenheader := c.GetHeader("Authorization")
-		
-		fmt.Println(tokenheader, "this the token")
+
 		if tokenheader == "" {
 			response := response.ClientResponse(http.StatusUnauthorized, "no auth header provieded", nil, nil)
 			c.JSON(http.StatusUnauthorized, response)
-
 
 			c.Abort()
 			return
