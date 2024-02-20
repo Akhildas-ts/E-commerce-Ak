@@ -197,26 +197,30 @@ func UpdateCouponDetails(discountPrice float64, userId int) error {
 func AddCategoryOffer(categoryOffer models.CategoryOfferReceiver) error {
 	var count int
 
-	errRes := database.DB.Raw("SELECT COUNT(*) FROM categories WHERE id = ?", categoryOffer.CategoryID).Scan(&count).Error
-
+	errRes := helper.CheckCategoryId(int(categoryOffer.CategoryID))
 	if errRes != nil {
 		return errRes
 	}
+	// errRes := database.DB.Raw("SELECT COUNT(*) FROM categories WHERE id = ?", categoryOffer.CategoryID).Scan(&count).Error
 
-	if count == 0 {
-		return models.ThereIsNOCategory
-	}
+	// if errRes != nil {
+	// 	return errRes
+	// }
+
+	// if count == 0 {
+	// 	return models.ThereIsNOCategory
+	// }
 
 	if categoryOffer.OfferName == "" {
 		return models.OfferNameCantBeNil
 	}
 
-	if categoryOffer.DiscountPercentage <=0 {
+	if categoryOffer.DiscountPercentage <= 0 {
 		return models.DiscountPriceIsLessThanZero
 
 	}
 
-	if categoryOffer.OfferLimit <=0 {
+	if categoryOffer.OfferLimit <= 0 {
 		return models.OfferLimitGreater
 	}
 
