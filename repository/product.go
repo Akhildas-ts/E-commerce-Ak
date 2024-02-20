@@ -3,6 +3,7 @@ package repository
 import (
 	"ak/database"
 	"ak/domain"
+	"ak/helper"
 	"ak/models"
 	"errors"
 	"fmt"
@@ -16,6 +17,13 @@ import (
 func AddProduct(product domain.Products) (domain.Products, error) {
 
 	var p models.ProductReceiver
+	var count int
+
+	errCount := helper.CheckCategoryId(int(product.CategoryID))
+	if errCount != nil {
+		return domain.Products{},errCount
+	}
+	
 
 	if product.Quantity < 0 {
 		return domain.Products{}, models.QuantityIsLessThanZero
@@ -25,8 +33,6 @@ func AddProduct(product domain.Products) (domain.Products, error) {
 	if product.Price < 0 {
 		return domain.Products{}, models.PriceIsLessThanZero
 	}
-
-	var count int
 
 	errorRes := database.DB.Raw("select count (*) from products where name = ?", product.Name).Scan(&count)
 

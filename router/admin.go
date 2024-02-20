@@ -35,8 +35,8 @@ func AdminRoutes(r *gin.RouterGroup, db *gorm.DB) *gin.RouterGroup {
 		{
 			category.POST("", handlers.AddCategory)
 			category.PUT("", handlers.UpdateCategory)
-			category.DELETE("", handlers.DeleteCategory)
-			category.GET("/:page", handlers.GetAllCategory)
+			category.GET("", handlers.DeleteCategory)
+			category.DELETE("/:page", handlers.GetAllCategory)
 			category.POST("/add-category-offer", handlers.AddCategoryOffer)
 		}
 
