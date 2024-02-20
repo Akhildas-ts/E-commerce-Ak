@@ -172,7 +172,6 @@ func GetTotalPrice(userID int) (models.CartTotal, error) {
 
 	discount_price, err = helper.GetCouponDiscountPrice(userID, cartTotal.TotalPrice)
 
-	fmt.Println("discount price", discount_price)
 	if err != nil {
 		return models.CartTotal{}, err
 	}
@@ -184,7 +183,6 @@ func GetTotalPrice(userID int) (models.CartTotal, error) {
     cartTotal.FinalPrice, _ = strconv.ParseFloat(formattedFinalPrice, 64)
 
 
-	fmt.Println("carttotal .finalprice", cartTotal.FinalPrice)
 
 	return cartTotal, nil
 
@@ -203,7 +201,7 @@ func DiscountReason(userID int, tableName string, discountLabel string, discount
 		*discountApplied = append(*discountApplied, discountLabel)
 		count = 0
 	}
-	fmt.Println("discount", discountApplied)
+
 
 	return nil
 }

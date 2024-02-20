@@ -149,7 +149,6 @@ func GetUserDataWithEmail(login models.UserLogin) (models.UserLoginResponse, err
 
 }
 
-
 func GetAllAddress(userId int) (models.AddressInfoResponse, error) {
 
 	addressInfo, err := repository.GetAllAddress(userId)
@@ -157,8 +156,6 @@ func GetAllAddress(userId int) (models.AddressInfoResponse, error) {
 	if err != nil {
 		return models.AddressInfoResponse{}, err
 	}
-
-	
 
 	return addressInfo, nil
 }
@@ -178,9 +175,6 @@ func Addaddress(UserId int, address models.AddressInfo) error {
 	return nil
 }
 
-
-
-
 func UserDetails(userid int) (models.UsersProfileDetails, error) {
 
 	//  return repository.UserDetails(userid)
@@ -199,9 +193,8 @@ func CheckOut(userid int) (models.CheckoutDetails, error) {
 
 	allUserAddress, err := repository.GetAllAddresses(userid)
 
-	fmt.Println("alluserAddres : from usecase:", allUserAddress)
-
 	if err != nil {
+	
 		return models.CheckoutDetails{}, err
 
 	}
@@ -209,8 +202,6 @@ func CheckOut(userid int) (models.CheckoutDetails, error) {
 	//GET ALL ITEMS FROM USER CARTS
 
 	cartitems, err := repository.GetAllItemsFromCart(userid)
-
-	fmt.Println("cartitems from repo:", cartitems)
 
 	if err != nil {
 		return models.CheckoutDetails{}, err
@@ -229,7 +220,6 @@ func CheckOut(userid int) (models.CheckoutDetails, error) {
 	if err != nil {
 		return models.CheckoutDetails{}, err
 	}
-	fmt.Println("Discount appiled", discountApplied)
 
 	// GET AVAILABLE THE PAYMENT OPTION <<<<
 
@@ -266,7 +256,7 @@ func ApplyReferral(userid int) (string, error) {
 	}
 
 	referralAmount, totalCartAmount, err := repository.GetReferralAndTotalAmount(userid)
-	fmt.Println("totatl cart amount ",totalCartAmount , "refferal amount",referralAmount)
+	fmt.Println("totatl cart amount ", totalCartAmount, "refferal amount", referralAmount)
 
 	if err != nil {
 
@@ -293,7 +283,7 @@ func ApplyReferral(userid int) (string, error) {
 
 	err = repository.UpdateSomethingBasedOnUserID("carts", "total_price", totalCartAmount, userid)
 
-	fmt.Println("totatl cart amount ",totalCartAmount , "refferal amount",referralAmount)
+	fmt.Println("totatl cart amount ", totalCartAmount, "refferal amount", referralAmount)
 
 	if err != nil {
 

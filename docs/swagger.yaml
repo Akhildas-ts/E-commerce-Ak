@@ -954,6 +954,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
       summary: Show Products of specified category
       tags:
       - User Product
@@ -1106,7 +1108,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: Upload images for products..
+      description: Retrieve all product Details with pagination to users
       parameters:
       - description: Page number
         in: path
@@ -1131,7 +1133,7 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - Bearer: []
-      summary: UPLOAD IMAGE
+      summary: Get Products Details to users
       tags:
       - User Product
   /referral/apply:

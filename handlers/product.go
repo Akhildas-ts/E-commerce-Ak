@@ -195,6 +195,7 @@ func SeeAllProductToAdmin(c *gin.Context) {
 // @Description Show all the Products belonging to a specified category
 // @Tags User Product
 // @Accept json
+// @Security Bearer
 // @Produce json
 // @Param data body map[string]int true "Category IDs and quantities"
 // @Success 200 {object} response.Response{}
@@ -262,18 +263,6 @@ func SeeAllProductToUser(c *gin.Context) {
 
 }
 
-// UPLOAD IMAGE
-// @Summary UPLOAD IMAGE
-// @Description Upload images for products..
-// @Tags User Product
-// @Accept json
-// @Produce json
-// @Security Bearer
-// @Param page path int true "Page number"
-// @Param count query int true "Page Count"
-// @Success 200 {object} response.Response{}
-// @Failure 500 {object} response.Response{}
-// @Router /product/{page} [get]
 func UploadImage(c *gin.Context) {
 
 	cfg, err := config.LoadConfig()
