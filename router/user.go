@@ -64,7 +64,7 @@ func UserRoutes(r *gin.RouterGroup, db *gorm.DB) *gin.RouterGroup {
 
 			order.POST("", handlers.OrderItemsFromCart)
 			order.GET("/:page", handlers.GetOrderDetails)
-			order.POST("/:id", handlers.CancelOrder)
+			order.PUT("/:id", handlers.CancelOrder)
 		}
 		r.GET("/delivered/:order_id", handlers.OrderDelivered)
 		r.GET("/cancel/:order_id", handlers.ReturnOrder)
