@@ -1015,6 +1015,37 @@ paths:
       tags:
       - User Order Management
   /order/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get all order details done by user to user side
+      parameters:
+      - description: page number
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: page size
+        in: query
+        name: count
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get Order Details to user side
+      tags:
+      - User Order
     put:
       consumes:
       - application/json
@@ -1039,38 +1070,6 @@ paths:
       security:
       - Bearer: []
       summary: Cancel order
-      tags:
-      - User Order
-  /orders/{id}:
-    get:
-      consumes:
-      - application/json
-      description: Get all order details done by user to user side
-      parameters:
-      - description: page number
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: page size
-        in: query
-        name: pageSize
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/response.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.Response'
-      security:
-      - Bearer: []
-      summary: Get Order Details to user side
       tags:
       - User Order
   /place-order/{id}/{id}:
