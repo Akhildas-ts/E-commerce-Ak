@@ -140,17 +140,7 @@ func CancelOrder(c *gin.Context) {
 	c.JSON(http.StatusOK, succesesRes)
 }
 
-// @Summary Place Order
-// @Description Place order from the user side
-// @Tags User Order Management
-// @Accept json
-// @Produce json
-// @Security Bearer
-// @Param id path int true "Address ID"
-// @Param id path int true "Payment"
-// @Success 200 {object} response.Response{}
-// @Failure 500 {object} response.Response{}
-// @Router /place-order/{id}/{id} [get]
+
 func PlaceOrder(c *gin.Context) {
 	userID, _ := c.Get(models.User_id)
 	userId := userID.(int)
