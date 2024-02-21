@@ -295,9 +295,9 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Page number",
+                        "description": "page number",
                         "name": "page",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     },
                     {
@@ -305,7 +305,8 @@ const docTemplate = `{
                         "default": 10,
                         "description": "Page count",
                         "name": "count",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {

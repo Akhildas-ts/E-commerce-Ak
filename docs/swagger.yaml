@@ -331,8 +331,8 @@ paths:
       - application/json
       description: Get all category
       parameters:
-      - description: Page number
-        in: query
+      - description: page number
+        in: path
         name: page
         required: true
         type: integer
@@ -340,6 +340,7 @@ paths:
         description: Page count
         in: query
         name: count
+        required: true
         type: integer
       produces:
       - application/json
