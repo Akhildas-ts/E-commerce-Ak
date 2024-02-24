@@ -95,18 +95,14 @@ func GetAllAddress(userId int) (models.AddressInfoResponse, error) {
 	}
 	fmt.Println("get all address from repo :", addressInfo)
 
-	fmt.Println("get all address from repo :", addressInfo)v
 	fmt.Println("get all address from repo :", addressInfo)
 	fmt.Println("get all address from repo :", addressInfo)
 	fmt.Println("get all address from repo :", addressInfo)
 	fmt.Println("get all address from repo :", addressInfo)
 	fmt.Println("get all address from repo :", addressInfo)
 	fmt.Println("get all address from repo :", addressInfo)
-	v
 	fmt.Println("get all address from repo :", addressInfo)
-	fmt.Println("get all address from repo :", addressInfo)
-	fmt.Println("get all address from repo :", addressInfo)
-	fmt.Println("get all address from repo :", addressInfo)
+	
 
 	return addressInfo, nil
 }
