@@ -30,46 +30,7 @@ func DashBoardUserDetails() (models.DashBoardUser, error) {
 
 	}
 	
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
 
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
-	fmt.Println("get all address from repo :")
 
 
 	err = database.DB.Raw("select count(*) from users where blocked = true").Scan(&userDetails.BlockedUser).Error
