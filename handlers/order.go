@@ -62,7 +62,7 @@ func OrderItemsFromCart(c *gin.Context) {
 // @Produce json
 // @Security Bearer
 // @Param id path string true "page number"
-// @Param count query string true "page size"
+// @Param count query string true "count"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
 // @Router /order/{id} [get]

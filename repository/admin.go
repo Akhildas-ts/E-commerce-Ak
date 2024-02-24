@@ -29,6 +29,9 @@ func DashBoardUserDetails() (models.DashBoardUser, error) {
 		return models.DashBoardUser{}, nil
 
 	}
+	
+
+
 
 	err = database.DB.Raw("select count(*) from users where blocked = true").Scan(&userDetails.BlockedUser).Error
 	if err != nil {
