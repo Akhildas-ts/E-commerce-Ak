@@ -1025,7 +1025,7 @@ paths:
         name: id
         required: true
         type: string
-      - description: page size
+      - description: count
         in: query
         name: count
         required: true
@@ -1072,38 +1072,6 @@ paths:
       summary: Cancel order
       tags:
       - User Order
-  /place-order/{id}/{id}:
-    get:
-      consumes:
-      - application/json
-      description: Place order from the user side
-      parameters:
-      - description: Address ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Payment
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/response.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.Response'
-      security:
-      - Bearer: []
-      summary: Place Order
-      tags:
-      - User Order Management
   /product/{page}:
     get:
       consumes:
