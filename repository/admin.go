@@ -29,6 +29,8 @@ func DashBoardUserDetails() (models.DashBoardUser, error) {
 		return models.DashBoardUser{}, nil
 
 	}
+	
+	fmt.Println("get all address from repo :")
 
 	err = database.DB.Raw("select count(*) from users where blocked = true").Scan(&userDetails.BlockedUser).Error
 	if err != nil {
