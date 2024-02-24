@@ -93,15 +93,8 @@ func GetAllAddress(userId int) (models.AddressInfoResponse, error) {
 	if err := database.DB.Raw("select * from  addresses where user_id =?", userId).Scan(&addressInfo).Error; err != nil {
 		return models.AddressInfoResponse{}, err
 	}
-	fmt.Println("get all address from repo :", addressInfo)
+	
 
-	fmt.Println("get all address from repo :", addressInfo)
-	fmt.Println("get all address from repo :", addressInfo)
-	fmt.Println("get all address from repo :", addressInfo)
-	fmt.Println("get all address from repo :", addressInfo)
-	fmt.Println("get all address from repo :", addressInfo)
-	fmt.Println("get all address from repo :", addressInfo)
-	fmt.Println("get all address from repo :", addressInfo)
 	
 
 	return addressInfo, nil
