@@ -11,7 +11,7 @@ var (
 	PriceIsLessThanZero         = errors.New("price is less than zero")
 	ProductNameIsAlredyExist    = errors.New("product name is alredy exist")
 	OrderIsAlreadyPlaced        = errors.New("order is already placed")
-	OrderIsAlreadyCancelled     = errors.New("order is already cancelled")
+	OrderIsAlreadyCancelled     = errors.New("order is already cancelleds")
 	AlreadyPaid                 = errors.New("already paid")
 	CannotReturn                = errors.New("cannot return after 7 days")
 	AlreadyReturn               = errors.New("already return")

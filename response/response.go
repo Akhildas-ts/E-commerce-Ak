@@ -8,7 +8,7 @@ type Response struct {
 }
 
 type SuccesResponse struct {
-	Statuscode int         `json:"status_codes"`
+	Statuscode int         `json:"status_code"`
 	Message    string      `json:"message"`
 }
 

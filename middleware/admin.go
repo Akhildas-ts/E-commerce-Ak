@@ -15,7 +15,7 @@ func AuthorizationMiddleware() gin.HandlerFunc {
 		tokenheader := c.GetHeader("Authorization")
 
 		if tokenheader == "" {
-			response := response.ClientResponse(http.StatusUnauthorized, "no auth header provieded", nil, nil)
+			response := response.ClientResponse(http.StatusUnauthorized, "no auth header proviededs", nil, nil)
 			c.JSON(http.StatusUnauthorized, response)
 
 			c.Abort()

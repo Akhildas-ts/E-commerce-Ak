@@ -10,7 +10,7 @@ import (
 
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		fmt.Println("Request Headers:", c.Request.Header)
+		fmt.Println("Request Headerss:", c.Request.Header)
 
 		//retrive the jwt token from the header *****
 

@@ -57,7 +57,7 @@ func ChechOrderID(orderid string) (bool, error) {
 		return false, err
 	}
 	if count == 0 {
-		return false,errors.New("there is no record ")
+		return false,errors.New("there is no records ")
 	}
 
 	return count > 0, nil
