@@ -8,7 +8,7 @@ type TokenAdmin struct {
 }
 
 type Admin struct {
-	ID        uint   `json:"id" gorm:"unique;not nul"`
+	ID        uint   `json:"id" gorm:"unique;not null"`
 	Firstname string `json:"firstname" gorm:"validate:required"`
 	Lastname  string `json:"lastname" gorm:"validate:required"`
 	Email     string `json:"email" gorm:"validate:required"`
