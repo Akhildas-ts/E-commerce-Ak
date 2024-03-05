@@ -72,7 +72,7 @@ func GetOrderDetails(c *gin.Context) {
 	pages, err := strconv.Atoi(pageStr)
 
 	if err != nil {
-		errorRes := response.ClientResponse(http.StatusBadRequest, "page number not in correct format", nil, err.Error())
+		errorRes := response.ClientResponse(http.StatusBadRequest, "page number not in correct format,check it ", nil, err.Error())
 		c.JSON(http.StatusBadRequest, errorRes)
 		return
 	}

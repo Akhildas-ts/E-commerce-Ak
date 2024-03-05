@@ -54,7 +54,7 @@ func SendOTP(c *gin.Context) {
 func VerifyOTP(c *gin.Context) {
 	var code models.VerifyData
 	if err := c.ShouldBindJSON(&code); err != nil {
-		errres := response.ClientResponse(http.StatusBadGateway, "json format is not correct", nil, err.Error())
+		errres := response.ClientResponse(http.StatusBadGateway, "json format is not correct ,check it", nil, err.Error())
 		c.JSON(http.StatusBadGateway, errres)
 		return
 	}
