@@ -66,6 +66,6 @@ func UploadObject(bucket string, filePath string, fileName string, sess *session
 
 	url := fmt.Sprintf("https://%s.s3.amazonaws.com/%s", bucket,fileName)
 
-	fmt.Printf("Successfully uploaded %q to %q\n", fileName, bucket)
+	fmt.Printf("Successfully upload %q to %q\n", fileName, bucket)
 	return url,nil
 }
