@@ -137,7 +137,7 @@ func ApplyCoupon(c *gin.Context) {
 	err := usecase.ApplyCoupon(couponDetails.CouponName, userID.(int))
 
 	if err != nil {
-		errorRes := response.ClientResponse(http.StatusBadRequest, "coupon could not  added ", nil, err.Error())
+		errorRes := response.ClientResponse(http.StatusBadRequest, "coupon could not  added,check it  ", nil, err.Error())
 		c.JSON(http.StatusInternalServerError, errorRes)
 		return
 	}
