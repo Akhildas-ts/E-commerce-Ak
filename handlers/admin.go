@@ -138,7 +138,7 @@ func CancelOrderFromAdminSide(c *gin.Context) {
 	}
 
 	if err != nil {
-		errorRes := response.ClientResponse(http.StatusInternalServerError, "Could not cancel the order", nil, err.Error())
+		errorRes := response.ClientResponse(http.StatusInternalServerError, "Can't cancel the order", nil, err.Error())
 		c.JSON(http.StatusInternalServerError, errorRes)
 		return
 	}
