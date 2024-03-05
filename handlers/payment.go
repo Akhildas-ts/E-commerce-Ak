@@ -54,6 +54,6 @@ func VerifyPayment(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, errorRes)
 		return
 	}
-	successRes := response.SuccessClientResponse(http.StatusOK, "Successfully updated payment detailse")
+	successRes := response.SuccessClientResponse(http.StatusOK, "Successfully updated payment details")
 	c.JSON(http.StatusOK, successRes)
 }
