@@ -24,7 +24,7 @@ func AddToCart(product_id int, user_id int) (models.CartResponse, error) {
 	productPrice, err := repository.GetPriceOfProductFromID(product_id)
 
 	if err != nil {
-		return models.CartResponse{}, errors.New("price of the product")
+		return models.CartResponse{}, errors.New("price of the products")
 	}
 
 	if QuantityOfProductInCart == 0 {
