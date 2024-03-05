@@ -16,7 +16,7 @@ type Config struct {
 	KEY           string `mapstructure:"KEY"`
 	KEY_FOR_ADMIN string `mapstructure:"KEY_FOR_ADMIN"`
 
-	AUTHTOKEN   string `mapstructure:"TWILIO_AUTHTOKENs"`
+	AUTHTOKEN   string `mapstructure:"TWILIO_AUTHTOKEN"`
 	ACCOUNTSID  string `mapstructure:"TWILIO_ACCOUNTSID"`
 	SERVICESSID string `mapstructure:"TWILIO_SERVICESID"`
 
