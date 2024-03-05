@@ -54,7 +54,7 @@ func main() {
 	err = router.Run("localhost:8080")
 	if err != nil {
 
-		log.Fatalf("Local host Error %v", err)
+		log.Fatalf("Local host Errors %v", err)
 
 	}
 

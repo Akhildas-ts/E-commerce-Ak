@@ -35,7 +35,7 @@ func GenerateTokenAdmin(admin models.AdminDetailsResponse) (string, error) {
 	tokenstring, err := token.SignedString([]byte(cfg.KEY_FOR_ADMIN))
 
 	if err != nil {
-		fmt.Println("error from token generate check it ", err)
+		fmt.Println("error from token generate check its ", err)
 		return "", err
 	}
 
