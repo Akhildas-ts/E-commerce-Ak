@@ -21,7 +21,7 @@ type Order struct {
 	GrandTotal       float64       `json:"grand_total"`
 	FinalPrice       float64       `json:"discount_price"`
 	ShipmentStatus   string        `json:"status"`
-	PaymentStatus    string        `json:"payment_statu"`
+	PaymentStatus    string        `json:"payment_status"`
 	Approval         bool          `json:"approval"`
 	// BillingAddressId int           `json:"address_id"`
 }
