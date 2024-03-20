@@ -20,7 +20,7 @@ func main() {
 			writeToFile("file.txt", d)
 			runCommand("git", "add", ".")
 			runCommand("git", "commit", "--date", currentDate.Format("Mon Jan 2 15:04:05 2006 -0700"), "-m", "commit")
-			runCommand("git", "push", "-u", "origin", "main")
+			runCommand("git", "push", "-u", "origin", "dev")
 		}
 	}
 }
