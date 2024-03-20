@@ -69,7 +69,7 @@ type PaymentDetails struct {
 	ID           uint   `json:"id"`
 	Payment_Name string `json:"payment_name"`
 }
-   
+
 type CheckoutDetails struct {
 	AddressInfoResponse []AddressInfoResponse
 	Payment_Method      []PaymentDetails
@@ -79,14 +79,10 @@ type CheckoutDetails struct {
 	DiscountReason      []string
 }
 
-
-type ForgetPassword struct { 
-
-ReEnterPassword  string  `json:"re_password"`
-ConformPassword string   `json:"conform"`
-
+type ForgetPassword struct {
+	ReEnterPassword string `json:"re_password"`
+	ConformPassword string `json:"conform"`
 }
-
 
 type UpdatePassword struct {
 	OldPassword        string `json:"old_password" binding:"required"`

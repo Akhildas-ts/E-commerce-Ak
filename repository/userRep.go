@@ -18,6 +18,7 @@ func CheckingEmailValidation(email string) (*domain.User, error) {
 
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			fmt.Println("the record is not found ")
 			return nil, nil
 
 		}

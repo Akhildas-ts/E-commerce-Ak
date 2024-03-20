@@ -14,6 +14,7 @@ import (
 
 func UsersingUp(user models.SignupDetail) (*models.TokenUser, error) {
 
+	
 	email, err := repository.CheckingEmailValidation(user.Email)
 
 	if err != nil {
