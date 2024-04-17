@@ -38,12 +38,7 @@ func ConnectDatabase(cfg config.Config) (*gorm.DB, error) {
 	db.AutoMigrate(&domain.CategoryOffer{})
 	db.AutoMigrate(&domain.Referral{})
 
-	fmt.Println("database resolce")
-	fmt.Println("database resolce")
-	fmt.Println("database resolce")
-	fmt.Println("database resolce")
-	fmt.Println("database resolce")
-	fmt.Println("database resolce")
+
 	
 	return DB, nil
 }
