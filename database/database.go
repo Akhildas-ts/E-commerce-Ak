@@ -17,6 +17,7 @@ func ConnectDatabase(cfg config.Config) (*gorm.DB, error) {
 
 	db, dberr := gorm.Open(postgres.Open(psqlInfo), &gorm.Config{})
 	if dberr != nil {
+
 		return nil, fmt.Errorf("faild to connect to database:%w", dberr)
 	}
 
@@ -38,7 +39,5 @@ func ConnectDatabase(cfg config.Config) (*gorm.DB, error) {
 	db.AutoMigrate(&domain.CategoryOffer{})
 	db.AutoMigrate(&domain.Referral{})
 
-
-	
 	return DB, nil
 }

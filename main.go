@@ -35,7 +35,7 @@ func main() {
 	docs.SwaggerInfo.Schemes = []string{"http"}
 
 	cfg, err := config.LoadConfig()
-	
+
 	if err != nil {
 		log.Fatalf("error loading the config file")
 	}
